@@ -1,15 +1,30 @@
 package mdettlaff.javagit.command;
 
 import java.io.IOException;
-import java.util.zip.InflaterInputStream;
 
-import org.apache.commons.io.IOUtils;
+import mdettlaff.javagit.db.GitObjects;
+import mdettlaff.javagit.domain.GitObject;
+import mdettlaff.javagit.domain.ObjectId;
 
 public class CatFile {
 
+	private final GitObjects objects;
+
+	public CatFile(GitObjects objects) {
+		this.objects = objects;
+	}
+
 	public static void main(String[] args) throws IOException {
-		InflaterInputStream input = new InflaterInputStream(System.in);
-		byte[] result = IOUtils.toByteArray(input);
-		System.out.println(new String(result));
+		CatFile command = new CatFile(new GitObjects());
+		command.execute(args);
+	}
+
+	public void execute(String[] args) throws IOException {
+		String rawObjectId = args[0];
+		GitObject object = objects.read(new ObjectId(rawObjectId));
+		System.out.println("type: " + object.getType().getLiteral());
+		System.out.println("size: " + object.getSize());
+		System.out.println();
+		System.out.print(new String(object.getContent()));
 	}
 }
