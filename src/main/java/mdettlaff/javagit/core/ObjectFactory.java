@@ -15,6 +15,7 @@ public class ObjectFactory {
 		int sizeLength = firstNullByteIndex - (firstSpaceIndex + 1);
 		int size = Integer.valueOf(new String(rawObject, firstSpaceIndex + 1, sizeLength));
 		byte[] content = Arrays.copyOfRange(rawObject, firstNullByteIndex + 1, rawObject.length);
+		verifySize(content, size);
 		Type type = GitObject.Type.getByLiteral(typeLiteral);
 		ObjectContent objectContent = createContent(type, content);
 		GitObject object = new GitObject(type, size, objectContent);
@@ -39,5 +40,11 @@ public class ObjectFactory {
 	private ObjectContent createCommit(byte[] content) {
 		String message = new String(content);
 		return new Commit(null, null, null, null, message);
+	}
+
+	private void verifySize(byte[] content, int size) {
+		if (content.length != size) {
+			throw new IllegalArgumentException("Invalid content size: " + size);
+		}
 	}
 }

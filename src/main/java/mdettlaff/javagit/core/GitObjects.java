@@ -61,7 +61,7 @@ public class GitObjects {
 	private void verifyId(GitObject object, ObjectId id) {
 		ObjectId computedId = object.computeId();
 		if (!computedId.equals(id)) {
-			throw new IllegalArgumentException("Given object ID is invalid (computed: " + computedId + ", given: " + id + ")");
+			throw new IllegalArgumentException("Invalid object ID: " + id);
 		}
 	}
 }
