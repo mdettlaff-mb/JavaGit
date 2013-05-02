@@ -50,10 +50,13 @@ public class GitObject {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("type: " + type.getLiteral() + "\n");
-		builder.append("size: " + size + "\n");
-		builder.append('\n');
-		builder.append(getContent());
+		if (type != Type.BLOB) {
+			builder.append(type.getLiteral());
+			builder.append(' ');
+			builder.append(computeId());
+			builder.append('\n');
+		}
+		builder.append(content);
 		return builder.toString();
 	}
 

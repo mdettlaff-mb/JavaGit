@@ -56,6 +56,10 @@ public class Commit implements ObjectContent {
 
 	@Override
 	public String toString() {
-		return new String(message);
+		StringBuilder builder = new StringBuilder();
+		builder.append("Author:\t" + author + "\n");
+		builder.append('\n');
+		builder.append(message + "\n");
+		return builder.toString();
 	}
 }
