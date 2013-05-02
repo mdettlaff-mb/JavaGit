@@ -20,11 +20,19 @@ public class CatFile {
 	}
 
 	public void execute(String[] args) throws IOException {
-		String rawObjectId = args[0];
-		GitObject object = objects.read(new ObjectId(rawObjectId));
+		ObjectId id = new ObjectId(args[0]);
+		GitObject object = objects.read(id);
+		checkId(object, id);
 		System.out.println("type: " + object.getType().getLiteral());
 		System.out.println("size: " + object.getSize());
 		System.out.println();
 		System.out.print(new String(object.getContent()));
+	}
+
+	private void checkId(GitObject object, ObjectId id) {
+		ObjectId computedId = object.computeId();
+		if (!computedId.equals(id)) {
+			throw new IllegalArgumentException("Given object ID is invalid (computed: " + computedId + ", given: " + id + ")");
+		}
 	}
 }

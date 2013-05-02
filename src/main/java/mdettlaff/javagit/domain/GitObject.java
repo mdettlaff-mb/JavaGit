@@ -1,5 +1,10 @@
 package mdettlaff.javagit.domain;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+
 public class GitObject {
 
 	private final Type type;
@@ -22,6 +27,22 @@ public class GitObject {
 
 	public byte[] getContent() {
 		return content;
+	}
+
+	public ObjectId computeId() {
+		byte[] header = createHeader();
+		byte[] hashBase = ArrayUtils.addAll(header, content);
+		HashCode sha1 = Hashing.sha1().newHasher().putBytes(hashBase).hash();
+		return new ObjectId(sha1.toString());
+	}
+
+	private byte[] createHeader() {
+		StringBuilder header = new StringBuilder();
+		header.append(type.getLiteral());
+		header.append(' ');
+		header.append(size);
+		header.append((char) 0);
+		return header.toString().getBytes();
 	}
 
 	public static enum Type {
