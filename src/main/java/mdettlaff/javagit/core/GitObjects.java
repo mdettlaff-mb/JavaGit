@@ -2,8 +2,9 @@ package mdettlaff.javagit.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
-
 
 import org.apache.commons.io.IOUtils;
 
@@ -19,12 +20,24 @@ public class GitObjects {
 
 	public GitObject read(ObjectId id) throws IOException {
 		String path = getPath(id);
-		InputStream inputStream = filesystem.readFile(path.toString());
-		InflaterInputStream inflaterInputStream = new InflaterInputStream(inputStream);
-		byte[] rawObject = IOUtils.toByteArray(inflaterInputStream);
+		InputStream input = filesystem.read(path.toString());
+		InflaterInputStream inflaterInput = new InflaterInputStream(input);
+		byte[] rawObject = IOUtils.toByteArray(inflaterInput);
 		GitObject object = new ObjectFactory().create(rawObject);
 		verifyId(object, id);
 		return object;
+	}
+
+	public void write(GitObject object) throws IOException {
+		ObjectId id = object.computeId();
+		String path = getPath(id);
+		System.out.println("output: " + new String(object.toByteArray()));
+		if (!filesystem.exists(path)) {
+			OutputStream output = filesystem.write(path.toString());
+			DeflaterOutputStream deflaterOutput = new DeflaterOutputStream(output);
+			IOUtils.write(object.toByteArray(), deflaterOutput);
+			deflaterOutput.close();
+		}
 	}
 
 	private String getPath(ObjectId id) {
