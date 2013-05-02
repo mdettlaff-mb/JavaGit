@@ -49,15 +49,7 @@ public class GitObject {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		if (type != Type.BLOB) {
-			builder.append(type.getLiteral());
-			builder.append(' ');
-			builder.append(computeId());
-			builder.append('\n');
-		}
-		builder.append(content);
-		return builder.toString();
+		return content.toString();
 	}
 
 	public static enum Type {

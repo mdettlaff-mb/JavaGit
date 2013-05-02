@@ -1,13 +1,10 @@
 package mdettlaff.javagit.core;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
 public class Commit implements ObjectContent {
-
-	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	private final ObjectId tree;
 	private final List<ObjectId> parents;
@@ -61,13 +58,6 @@ public class Commit implements ObjectContent {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Author:\t" + author + "\n");
-		String date = new SimpleDateFormat(DATE_FORMAT).format(author.getDate().toDate());
-		builder.append("Date:\t" + date + " ");
-		builder.append(author.getTimezone() + "\n");
-		builder.append('\n');
-		builder.append(message + "\n");
-		return builder.toString();
+		return new String(toByteArray());
 	}
 }

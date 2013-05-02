@@ -46,10 +46,6 @@ public class Creator {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(name);
-		builder.append(' ');
-		builder.append("<" + email + ">");
-		return builder.toString();
+		return new String(toByteArray());
 	}
 }

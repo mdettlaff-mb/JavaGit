@@ -63,9 +63,10 @@ public class GitObjectsTest {
 		assertCreator(commit.getCommitter());
 		assertEquals("jar with dependencies", commit.getMessage());
 		StringBuilder builder = new StringBuilder();
-		builder.append("commit b92ec3607cf250278ad82231564fbb2b92e34a79\n");
-		builder.append("Author:	Michał Dettlaff <mdettlaff@jitsolutions.pl>\n");
-		builder.append("Date:	2013-05-02 16:55:10 +0200\n");
+		builder.append("tree 5ddc4f4ddac21654260395b4767eaf43da4d0c63\n");
+		builder.append("parent 02151e56a26e2735264b95236e4d5a24dad9a8ac\n");
+		builder.append("author Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200\n");
+		builder.append("committer Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200\n");
 		builder.append("\n");
 		builder.append("jar with dependencies\n");
 		assertEquals(builder.toString(), result.toString());
