@@ -16,11 +16,11 @@ public class CatFile {
 
 	public static void main(String[] args) throws IOException {
 		CatFile command = new CatFile(new GitObjects());
-		command.execute(args);
+		ObjectId id = new ObjectId(args[0]);
+		command.execute(id);
 	}
 
-	public void execute(String[] args) throws IOException {
-		ObjectId id = new ObjectId(args[0]);
+	public void execute(ObjectId id) throws IOException {
 		GitObject object = objects.read(id);
 		System.out.println("type: " + object.getType().getLiteral());
 		System.out.println("size: " + object.getSize());
