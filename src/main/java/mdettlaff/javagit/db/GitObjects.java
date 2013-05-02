@@ -22,13 +22,22 @@ public class GitObjects {
 		path.append(id.getValue().substring(2));
 		InputStream fileInput = new FileInputStream(path.toString());
 		InflaterInputStream input = new InflaterInputStream(fileInput);
-		byte[] rawGitObject = IOUtils.toByteArray(input);
-		int firstSpaceIndex = ArrayUtils.indexOf(rawGitObject, (byte) ' ');
-		int firstNullByteIndex = ArrayUtils.indexOf(rawGitObject, (byte) 0);
-		String typeLiteral = new String(rawGitObject, 0, firstSpaceIndex);
+		byte[] rawObject = IOUtils.toByteArray(input);
+		int firstSpaceIndex = ArrayUtils.indexOf(rawObject, (byte) ' ');
+		int firstNullByteIndex = ArrayUtils.indexOf(rawObject, (byte) 0);
+		String typeLiteral = new String(rawObject, 0, firstSpaceIndex);
 		int sizeLength = firstNullByteIndex - (firstSpaceIndex + 1);
-		int size = Integer.valueOf(new String(rawGitObject, firstSpaceIndex + 1, sizeLength));
-		byte[] content = Arrays.copyOfRange(rawGitObject, firstNullByteIndex + 1, rawGitObject.length);
-		return new GitObject(GitObject.Type.getByLiteral(typeLiteral), size, content);
+		int size = Integer.valueOf(new String(rawObject, firstSpaceIndex + 1, sizeLength));
+		byte[] content = Arrays.copyOfRange(rawObject, firstNullByteIndex + 1, rawObject.length);
+		GitObject object = new GitObject(GitObject.Type.getByLiteral(typeLiteral), size, content);
+		verifyId(object, id);
+		return object;
+	}
+
+	private void verifyId(GitObject object, ObjectId id) {
+		ObjectId computedId = object.computeId();
+		if (!computedId.equals(id)) {
+			throw new IllegalArgumentException("Given object ID is invalid (computed: " + computedId + ", given: " + id + ")");
+		}
 	}
 }
