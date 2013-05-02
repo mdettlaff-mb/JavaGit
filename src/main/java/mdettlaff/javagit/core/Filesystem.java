@@ -1,4 +1,4 @@
-package mdettlaff.javagit.db;
+package mdettlaff.javagit.core;
 
 import java.io.FileInputStream;
 import java.io.IOException;

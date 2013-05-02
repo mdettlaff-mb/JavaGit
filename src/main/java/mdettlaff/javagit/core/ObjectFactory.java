@@ -1,8 +1,8 @@
-package mdettlaff.javagit.domain;
+package mdettlaff.javagit.core;
 
 import java.util.Arrays;
 
-import mdettlaff.javagit.domain.GitObject.Type;
+import mdettlaff.javagit.core.GitObject.Type;
 
 import org.apache.commons.lang3.ArrayUtils;
 

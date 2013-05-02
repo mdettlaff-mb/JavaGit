@@ -1,4 +1,4 @@
-package mdettlaff.javagit.domain;
+package mdettlaff.javagit.core;
 
 import org.apache.commons.lang3.ArrayUtils;
 

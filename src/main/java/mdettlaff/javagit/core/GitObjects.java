@@ -1,12 +1,9 @@
-package mdettlaff.javagit.db;
+package mdettlaff.javagit.core;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.InflaterInputStream;
 
-import mdettlaff.javagit.domain.GitObject;
-import mdettlaff.javagit.domain.ObjectFactory;
-import mdettlaff.javagit.domain.ObjectId;
 
 import org.apache.commons.io.IOUtils;
 

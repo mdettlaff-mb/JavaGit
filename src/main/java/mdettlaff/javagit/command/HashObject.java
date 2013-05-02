@@ -2,8 +2,8 @@ package mdettlaff.javagit.command;
 
 import java.io.IOException;
 
-import mdettlaff.javagit.domain.Blob;
-import mdettlaff.javagit.domain.GitObject;
+import mdettlaff.javagit.core.Blob;
+import mdettlaff.javagit.core.GitObject;
 
 import org.apache.commons.io.IOUtils;
 

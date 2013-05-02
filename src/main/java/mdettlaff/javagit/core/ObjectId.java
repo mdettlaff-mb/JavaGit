@@ -1,4 +1,4 @@
-package mdettlaff.javagit.domain;
+package mdettlaff.javagit.core;
 
 import java.util.Objects;
 

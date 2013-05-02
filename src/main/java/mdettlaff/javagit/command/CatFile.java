@@ -2,10 +2,10 @@ package mdettlaff.javagit.command;
 
 import java.io.IOException;
 
-import mdettlaff.javagit.db.Filesystem;
-import mdettlaff.javagit.db.GitObjects;
-import mdettlaff.javagit.domain.GitObject;
-import mdettlaff.javagit.domain.ObjectId;
+import mdettlaff.javagit.core.Filesystem;
+import mdettlaff.javagit.core.GitObject;
+import mdettlaff.javagit.core.GitObjects;
+import mdettlaff.javagit.core.ObjectId;
 
 public class CatFile {
 
