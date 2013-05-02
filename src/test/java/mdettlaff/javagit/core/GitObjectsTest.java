@@ -16,6 +16,8 @@ import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
+
 public class GitObjectsTest {
 
 	private Filesystem filesystem;
@@ -87,5 +89,31 @@ public class GitObjectsTest {
 		// verify
 		byte[] expectedBlob = IOUtils.toByteArray(getClass().getResourceAsStream("blob"));
 		assertArrayEquals(expectedBlob, rawBlob.toByteArray());
+	}
+
+	@Test
+	public void testWriteCommit() throws Exception {
+		ByteArrayOutputStream rawCommit = new ByteArrayOutputStream();
+		when(filesystem.openOutput(".git/objects/b9/2ec3607cf250278ad82231564fbb2b92e34a79")).thenReturn(rawCommit);
+		ObjectId tree = new ObjectId("5ddc4f4ddac21654260395b4767eaf43da4d0c63");
+		ImmutableList<ObjectId> parents = ImmutableList.of(new ObjectId("02151e56a26e2735264b95236e4d5a24dad9a8ac"));
+		Creator author = prepareCreator();
+		Creator committer = prepareCreator();
+		String message = "jar with dependencies";
+		Commit commit = new Commit(tree, parents, author, committer, message);
+		GitObject object = new GitObject(GitObject.Type.COMMIT, 258, commit);
+		// exercise
+		objects.write(object);
+		// verify
+		byte[] expectedCommit = IOUtils.toByteArray(getClass().getResourceAsStream("commit"));
+		assertArrayEquals(expectedCommit, rawCommit.toByteArray());
+	}
+
+	private Creator prepareCreator() {
+		String name = "Michał Dettlaff";
+		String email = "mdettlaff@jitsolutions.pl";
+		String timezone = "+0200";
+		DateTime date = new DateTime(2013, 5, 2, 16, 55, 10, 0, DateTimeZone.forID(timezone));
+		return new Creator(name, email, date, timezone);
 	}
 }
