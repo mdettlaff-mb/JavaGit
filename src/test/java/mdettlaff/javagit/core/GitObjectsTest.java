@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +37,9 @@ public class GitObjectsTest {
 		assertEquals(GitObject.Type.BLOB, result.getType());
 		assertEquals(8, result.getSize());
 		assertTrue("content is not a blob", result.getContent() instanceof Blob);
-		assertEquals("foo\nbar\n", new String(((Blob) result.getContent()).getContent()));
+		Blob blob = (Blob) result.getContent();
+		assertEquals("foo\nbar\n", new String(blob.getContent()));
+		assertEquals("foo\nbar\n", result.toString());
 	}
 
 	@Test
@@ -53,9 +57,24 @@ public class GitObjectsTest {
 		List<ObjectId> parents = commit.getParents();
 		assertEquals(1, parents.size());
 		assertEquals(new ObjectId("02151e56a26e2735264b95236e4d5a24dad9a8ac"), parents.get(0));
-		assertEquals("Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200", commit.getAuthor());
-		assertEquals("Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200", commit.getCommitter());
+		assertCreator(commit.getAuthor());
+		assertCreator(commit.getCommitter());
 		assertEquals("jar with dependencies", commit.getMessage());
+		StringBuilder builder = new StringBuilder();
+		builder.append("commit b92ec3607cf250278ad82231564fbb2b92e34a79\n");
+		builder.append("Author:	Michał Dettlaff <mdettlaff@jitsolutions.pl>\n");
+		builder.append("Date:	2013-05-02 16:55:10 +0200\n");
+		builder.append("\n");
+		builder.append("jar with dependencies\n");
+		assertEquals(builder.toString(), result.toString());
+	}
+
+	private void assertCreator(Creator creator) {
+		assertEquals("Michał Dettlaff", creator.getName());
+		assertEquals("mdettlaff@jitsolutions.pl", creator.getEmail());
+		DateTimeZone authorTimezone = creator.getDate().getZone();
+		assertEquals("+02:00", authorTimezone.getID());
+		assertEquals(new DateTime(2013, 5, 2, 16, 55, 10, 0, authorTimezone), creator.getDate());
 	}
 
 	@Test
