@@ -47,6 +47,16 @@ public class GitObject {
 		return header.toString().getBytes();
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("type: " + type.getLiteral() + "\n");
+		builder.append("size: " + size + "\n");
+		builder.append('\n');
+		builder.append(getContent());
+		return builder.toString();
+	}
+
 	public static enum Type {
 		BLOB("blob"),
 		TREE("tree"),

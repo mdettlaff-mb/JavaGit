@@ -16,4 +16,9 @@ public class Blob implements ObjectContent {
 	public byte[] toByteArray() {
 		return content;
 	}
+
+	@Override
+	public String toString() {
+		return new String(content);
+	}
 }
