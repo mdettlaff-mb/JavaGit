@@ -9,9 +9,9 @@ public class GitObject {
 
 	private final Type type;
 	private final int size;
-	private final byte[] content;
+	private final ObjectContent content;
 
-	public GitObject(Type type, int size, byte[] content) {
+	public GitObject(Type type, int size, ObjectContent content) {
 		this.type = type;
 		this.size = size;
 		this.content = content;
@@ -25,15 +25,17 @@ public class GitObject {
 		return size;
 	}
 
-	public byte[] getContent() {
+	public ObjectContent getContent() {
 		return content;
 	}
 
 	public ObjectId computeId() {
-		byte[] header = createHeader();
-		byte[] hashBase = ArrayUtils.addAll(header, content);
-		HashCode sha1 = Hashing.sha1().newHasher().putBytes(hashBase).hash();
+		HashCode sha1 = Hashing.sha1().newHasher().putBytes(toByteArray()).hash();
 		return new ObjectId(sha1.toString());
+	}
+
+	public byte[] toByteArray() {
+		return ArrayUtils.addAll(createHeader(), content.toByteArray());
 	}
 
 	private byte[] createHeader() {

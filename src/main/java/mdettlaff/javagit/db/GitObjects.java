@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.zip.InflaterInputStream;
 
+import mdettlaff.javagit.domain.Blob;
 import mdettlaff.javagit.domain.GitObject;
 import mdettlaff.javagit.domain.ObjectId;
 
@@ -29,7 +30,7 @@ public class GitObjects {
 		int sizeLength = firstNullByteIndex - (firstSpaceIndex + 1);
 		int size = Integer.valueOf(new String(rawObject, firstSpaceIndex + 1, sizeLength));
 		byte[] content = Arrays.copyOfRange(rawObject, firstNullByteIndex + 1, rawObject.length);
-		GitObject object = new GitObject(GitObject.Type.getByLiteral(typeLiteral), size, content);
+		GitObject object = new GitObject(GitObject.Type.getByLiteral(typeLiteral), size, new Blob(content));
 		verifyId(object, id);
 		return object;
 	}

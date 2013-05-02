@@ -2,6 +2,7 @@ package mdettlaff.javagit.command;
 
 import java.io.IOException;
 
+import mdettlaff.javagit.domain.Blob;
 import mdettlaff.javagit.domain.GitObject;
 
 import org.apache.commons.io.IOUtils;
@@ -15,7 +16,7 @@ public class HashObject {
 
 	public void execute() throws IOException {
 		byte[] content = IOUtils.toByteArray(System.in);
-		GitObject object = new GitObject(GitObject.Type.BLOB, content.length, content);
+		GitObject object = new GitObject(GitObject.Type.BLOB, content.length, new Blob(content));
 		System.out.println(object.computeId());
 	}
 }

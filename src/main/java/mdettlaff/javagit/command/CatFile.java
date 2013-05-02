@@ -25,6 +25,6 @@ public class CatFile {
 		System.out.println("type: " + object.getType().getLiteral());
 		System.out.println("size: " + object.getSize());
 		System.out.println();
-		System.out.print(new String(object.getContent()));
+		System.out.print(new String(object.getContent().toByteArray()));
 	}
 }
