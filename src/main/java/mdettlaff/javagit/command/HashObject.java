@@ -1,7 +1,6 @@
 package mdettlaff.javagit.command;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import mdettlaff.javagit.core.Blob;
 import mdettlaff.javagit.core.Filesystem;

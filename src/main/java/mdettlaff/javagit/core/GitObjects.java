@@ -20,23 +20,29 @@ public class GitObjects {
 
 	public GitObject read(ObjectId id) throws IOException {
 		String path = getPath(id);
-		InputStream input = filesystem.read(path.toString());
-		InflaterInputStream inflaterInput = new InflaterInputStream(input);
-		byte[] rawObject = IOUtils.toByteArray(inflaterInput);
-		GitObject object = new ObjectFactory().create(rawObject);
-		verifyId(object, id);
-		return object;
+		InputStream input = filesystem.openInput(path.toString());
+		try {
+			input = new InflaterInputStream(input);
+			byte[] rawObject = IOUtils.toByteArray(input);
+			GitObject object = new ObjectFactory().create(rawObject);
+			verifyId(object, id);
+			return object;
+		} finally {
+			IOUtils.closeQuietly(input);
+		}
 	}
 
 	public void write(GitObject object) throws IOException {
 		ObjectId id = object.computeId();
 		String path = getPath(id);
-		System.out.println("output: " + new String(object.toByteArray()));
 		if (!filesystem.exists(path)) {
-			OutputStream output = filesystem.write(path.toString());
-			DeflaterOutputStream deflaterOutput = new DeflaterOutputStream(output);
-			IOUtils.write(object.toByteArray(), deflaterOutput);
-			deflaterOutput.close();
+			OutputStream output = filesystem.openOutput(path.toString());
+			try {
+				output = new DeflaterOutputStream(output);
+				IOUtils.write(object.toByteArray(), output);
+			} finally {
+				IOUtils.closeQuietly(output);
+			}
 		}
 	}
 

@@ -12,11 +12,11 @@ import org.apache.commons.io.FilenameUtils;
 
 public class Filesystem {
 
-	public InputStream read(String path) throws IOException {
+	public InputStream openInput(String path) throws IOException {
 		return new FileInputStream(FilenameUtils.normalize(path));
 	}
 
-	public OutputStream write(String path) throws FileNotFoundException {
+	public OutputStream openOutput(String path) throws FileNotFoundException {
 		return new FileOutputStream(FilenameUtils.normalize(path));
 	}
 
