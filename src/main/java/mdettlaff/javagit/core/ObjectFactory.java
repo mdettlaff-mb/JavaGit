@@ -7,7 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mdettlaff.javagit.core.GitObject.Type;
+import mdettlaff.javagit.core.Tree.Node;
+import mdettlaff.javagit.core.Tree.Node.Mode;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -35,6 +38,8 @@ public class ObjectFactory {
 		switch (type) {
 		case BLOB:
 			return createBlob(content);
+		case TREE:
+			return createTree(content);
 		case COMMIT:
 			return createCommit(content);
 		default:
@@ -46,7 +51,35 @@ public class ObjectFactory {
 		return new Blob(content);
 	}
 
-	private ObjectContent createCommit(byte[] content) {
+	private Tree createTree(byte[] content) {
+		List<Node> nodes = new ArrayList<>();
+		int startIndex = 0;
+		for (int i = 0; i < content.length; i++) {
+			if (content[i] == (byte) 0) {
+				int endIndex = i + 21;
+				i = endIndex;
+				byte[] subarray = ArrayUtils.subarray(content, startIndex, endIndex);
+				Node node = createNode(subarray);
+				nodes.add(node);
+				startIndex = endIndex;
+			}
+		}
+		return new Tree(ImmutableList.copyOf(nodes));
+	}
+
+	private Node createNode(byte[] content) {
+		int firstSpaceIndex = ArrayUtils.indexOf(content, (byte) ' ');
+		int firstNullByteIndex = ArrayUtils.indexOf(content, (byte) 0);
+		String fileModeLiteral = new String(content, 0, firstSpaceIndex);
+		Mode mode = Mode.getByLiteral(fileModeLiteral);
+		int pathLength = firstNullByteIndex - (firstSpaceIndex + 1);
+		String path = new String(content, firstSpaceIndex + 1, pathLength);
+		byte[] id = Arrays.copyOfRange(content, firstNullByteIndex + 1, content.length);
+		ObjectId value = new ObjectId(Hex.encodeHexString(id));
+		return new Node(mode, value, path);
+	}
+
+	private Commit createCommit(byte[] content) {
 		CommitBuilder commit = new CommitBuilder();
 		String[] lines = new String(content).split("\n");
 		for (int i = 0; i < lines.length; i++) {

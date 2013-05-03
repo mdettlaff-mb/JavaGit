@@ -10,6 +10,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import mdettlaff.javagit.core.Tree.Node;
+import mdettlaff.javagit.core.Tree.Node.Mode;
+
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -42,6 +45,27 @@ public class GitObjectsTest {
 		Blob blob = (Blob) result.getContent();
 		assertEquals("foo\nbar\n", new String(blob.getContent()));
 		assertEquals("foo\nbar\n", result.toString());
+	}
+
+	@Test
+	public void testReadTree() throws Exception {
+		InputStream rawTree = getClass().getResourceAsStream("tree");
+		when(filesystem.openInput(".git/objects/be/42fc666262908364880b2c108ec02597d8b54a")).thenReturn(rawTree);
+		// exercise
+		GitObject result = objects.read(new ObjectId("be42fc666262908364880b2c108ec02597d8b54a"));
+		// verify
+		assertEquals(GitObject.Type.TREE, result.getType());
+		assertEquals(103, result.getSize());
+		assertTrue("content is not a tree", result.getContent() instanceof Tree);
+		Tree tree = (Tree) result.getContent();
+		List<Tree.Node> nodes = tree.getNodes();
+		assertEquals(3, nodes.size());
+		assertEquals(Tree.Node.Mode.NORMAL, nodes.get(0).getMode());
+		StringBuilder builder = new StringBuilder();
+		builder.append("100644 6433b6766d8372901881148308f0d000c8c416f8 .gitignore\n");
+		builder.append("100755 f3f38869887ba7ba6ce945a35873f638e5c48f8b pom.xml\n");
+		builder.append("040000 4eb25976ed157dd9fba6532b60bfb10cc02dce28 src\n");
+		assertEquals(builder.toString(), result.toString());
 	}
 
 	@Test
@@ -90,6 +114,23 @@ public class GitObjectsTest {
 		// verify
 		byte[] expectedBlob = IOUtils.toByteArray(getClass().getResourceAsStream("blob"));
 		assertArrayEquals(expectedBlob, rawBlob.toByteArray());
+	}
+
+	@Test
+	public void testWriteTree() throws Exception {
+		ByteArrayOutputStream rawTree = new ByteArrayOutputStream();
+		when(filesystem.openOutput(".git/objects/be/42fc666262908364880b2c108ec02597d8b54a")).thenReturn(rawTree);
+		Node node1 = new Node(Mode.NORMAL, new ObjectId("6433b6766d8372901881148308f0d000c8c416f8"), ".gitignore");
+		Node node2 = new Node(Mode.EXECUTABLE, new ObjectId("f3f38869887ba7ba6ce945a35873f638e5c48f8b"), "pom.xml");
+		Node node3 = new Node(Mode.DIRECTORY, new ObjectId("4eb25976ed157dd9fba6532b60bfb10cc02dce28"), "src");
+		ImmutableList<Node> nodes = ImmutableList.of(node1, node2, node3);
+		ObjectContent tree = new Tree(nodes);
+		GitObject object = new GitObject(GitObject.Type.TREE, 103, tree);
+		// exercise
+		objects.write(object);
+		// verify
+		byte[] expectedTree = IOUtils.toByteArray(getClass().getResourceAsStream("tree"));
+		assertArrayEquals(expectedTree, rawTree.toByteArray());
 	}
 
 	@Test
