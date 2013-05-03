@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-public class ByteArrayBuilder {
+class ByteArrayBuilder {
 
 	public static final Charset ENCODING = Charset.forName("UTF-8");
 

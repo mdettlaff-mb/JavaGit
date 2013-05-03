@@ -18,7 +18,7 @@ import org.joda.time.DateTimeZone;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
-public class ObjectFactory {
+class ObjectFactory {
 
 	public GitObject create(byte[] rawObject) {
 		int firstSpaceIndex = ArrayUtils.indexOf(rawObject, (byte) ' ');
