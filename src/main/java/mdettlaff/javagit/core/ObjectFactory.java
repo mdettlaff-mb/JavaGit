@@ -99,7 +99,7 @@ class ObjectFactory {
 			}
 			if (line.isEmpty()) {
 				String[] messageLines = ArrayUtils.subarray(lines, i + 1, lines.length);
-				commit.message(StringUtils.join(messageLines));
+				commit.message(StringUtils.join(messageLines, '\n'));
 				break;
 			}
 		}
