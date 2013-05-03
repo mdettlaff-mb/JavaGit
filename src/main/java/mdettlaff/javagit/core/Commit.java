@@ -2,6 +2,7 @@ package mdettlaff.javagit.core;
 
 import java.util.List;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 public class Commit implements ObjectContent {
@@ -13,6 +14,7 @@ public class Commit implements ObjectContent {
 	private final String message;
 
 	public Commit(ObjectId tree, ImmutableList<ObjectId> parents, Creator author, Creator committer, String message) {
+		Preconditions.checkNotNull(parents, "List of commit parents cannot be null");
 		this.tree = tree;
 		this.parents = parents;
 		this.author = author;
