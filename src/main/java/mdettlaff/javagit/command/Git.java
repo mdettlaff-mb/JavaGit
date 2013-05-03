@@ -1,10 +1,12 @@
 package mdettlaff.javagit.command;
 
+import mdettlaff.javagit.core.Filesystem;
+import mdettlaff.javagit.core.GitObjects;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import mdettlaff.javagit.core.Filesystem;
-import mdettlaff.javagit.core.GitObjects;
+import com.google.common.base.Preconditions;
 
 public class Git implements Command {
 
@@ -15,9 +17,7 @@ public class Git implements Command {
 	@Override
 	public void execute(String[] args) throws Exception {
 		try {
-			if (args.length == 0) {
-				throw new IllegalArgumentException("No command specified");
-			}
+			Preconditions.checkArgument(args.length > 0, "No command specified");
 			String commandArgument = args[0];
 			Command command = createCommand(commandArgument);
 			command.execute(ArrayUtils.remove(args, 0));

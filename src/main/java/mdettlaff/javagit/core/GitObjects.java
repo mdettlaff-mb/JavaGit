@@ -64,8 +64,6 @@ public class GitObjects {
 
 	private void verifyId(GitObject object, ObjectId id) {
 		ObjectId computedId = object.computeId();
-		if (!computedId.equals(id)) {
-			throw new IllegalArgumentException("Invalid object ID: " + id);
-		}
+		Preconditions.checkState(computedId.equals(id), "Invalid object ID: " + id);
 	}
 }

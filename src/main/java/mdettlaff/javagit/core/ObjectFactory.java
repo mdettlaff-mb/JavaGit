@@ -145,9 +145,7 @@ class ObjectFactory {
 	}
 
 	private void verifySize(byte[] content, int size) {
-		if (content.length != size) {
-			throw new IllegalArgumentException("Invalid content size: " + size);
-		}
+		Preconditions.checkState(content.length == size, "Invalid content size: " + size);
 	}
 
 	private static class CommitBuilder {
