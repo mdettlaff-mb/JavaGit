@@ -92,7 +92,7 @@ public class GitObjectsTest {
 		builder.append("parent 02151e56a26e2735264b95236e4d5a24dad9a8ac\n");
 		builder.append("author Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200\n");
 		builder.append("committer Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200\n");
-		builder.append("\n");
+		builder.append('\n');
 		builder.append("jar with dependencies\n");
 		assertEquals(builder.toString(), result.toString());
 	}
@@ -103,6 +103,40 @@ public class GitObjectsTest {
 		DateTimeZone authorTimezone = creator.getDate().getZone();
 		assertEquals("+02:00", authorTimezone.getID());
 		assertEquals(new DateTime(2013, 5, 2, 16, 55, 10, 0, authorTimezone), creator.getDate());
+	}
+
+	@Test
+	public void testReadTag() throws Exception {
+		InputStream rawTag = getClass().getResourceAsStream("tag");
+		when(filesystem.openInput(".git/objects/e2/2339445c0e1adfaaa55945569e992b3585812f")).thenReturn(rawTag);
+		// exercise
+		GitObject result = objects.read(new ObjectId("e22339445c0e1adfaaa55945569e992b3585812f"));
+		// verify
+		assertEquals(Type.TAG, result.getType());
+		assertEquals(152, result.getSize());
+		assertTrue("content is not a tag", result.getContent() instanceof Tag);
+		Tag tag = (Tag) result.getContent();
+		assertEquals(new ObjectId("3288381de6cfb6186c252237602e862137d5e796"), tag.getObject());
+		assertEquals(Type.COMMIT, tag.getType());
+		assertEquals("1.0", tag.getTag());
+		assertTagger(tag.getTagger());
+		assertEquals("my sample tag", tag.getMessage());
+		StringBuilder builder = new StringBuilder();
+		builder.append("object 3288381de6cfb6186c252237602e862137d5e796\n");
+		builder.append("type commit\n");
+		builder.append("tag 1.0\n");
+		builder.append("tagger Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367568506 +0200\n");
+		builder.append('\n');
+		builder.append("my sample tag\n");
+		assertEquals(builder.toString(), result.toString());
+	}
+
+	private void assertTagger(Creator creator) {
+		assertEquals("Michał Dettlaff", creator.getName());
+		assertEquals("mdettlaff@jitsolutions.pl", creator.getEmail());
+		DateTimeZone authorTimezone = creator.getDate().getZone();
+		assertEquals("+02:00", authorTimezone.getID());
+		assertEquals(new DateTime(2013, 5, 3, 10, 8, 26, 0, authorTimezone), creator.getDate());
 	}
 
 	@Test
@@ -157,6 +191,29 @@ public class GitObjectsTest {
 		String email = "mdettlaff@jitsolutions.pl";
 		String timezone = "+0200";
 		DateTime date = new DateTime(2013, 5, 2, 16, 55, 10, 0, DateTimeZone.forID(timezone));
+		return new Creator(name, email, date, timezone);
+	}
+
+	@Test
+	public void testWriteTag() throws Exception {
+		ByteArrayOutputStream rawTag = new ByteArrayOutputStream();
+		when(filesystem.openOutput(".git/objects/e2/2339445c0e1adfaaa55945569e992b3585812f")).thenReturn(rawTag);
+		ObjectId tagObject = new ObjectId("3288381de6cfb6186c252237602e862137d5e796");
+		Creator tagger = prepareTagger();
+		Tag tag = new Tag(tagObject, Type.COMMIT, "1.0", tagger, "my sample tag");
+		GitObject object = new GitObject(Type.TAG, 152, tag);
+		// exercise
+		objects.write(object);
+		// verify
+		byte[] expectedTag = IOUtils.toByteArray(getClass().getResourceAsStream("tag"));
+		assertArrayEquals(expectedTag, rawTag.toByteArray());
+	}
+
+	private Creator prepareTagger() {
+		String name = "Michał Dettlaff";
+		String email = "mdettlaff@jitsolutions.pl";
+		String timezone = "+0200";
+		DateTime date = new DateTime(2013, 5, 3, 10, 8, 26, 0, DateTimeZone.forID(timezone));
 		return new Creator(name, email, date, timezone);
 	}
 }

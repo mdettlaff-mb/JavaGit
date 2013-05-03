@@ -42,6 +42,8 @@ public class ObjectFactory {
 			return createTree(content);
 		case COMMIT:
 			return createCommit(content);
+		case TAG:
+			return createTag(content);
 		default:
 			throw new IllegalArgumentException("Unknown object type: " + type);
 		}
@@ -105,6 +107,32 @@ public class ObjectFactory {
 		return commit.build();
 	}
 
+	private Tag createTag(byte[] content) {
+		TagBuilder tag = new TagBuilder();
+		String[] lines = new String(content).split("\n");
+		for (int i = 0; i < lines.length; i++) {
+			String line = lines[i];
+			if (line.startsWith("object")) {
+				tag.object(new ObjectId(line.substring(7)));
+			}
+			if (line.startsWith("type")) {
+				tag.type(Type.getByLiteral(line.substring(5)));
+			}
+			if (line.startsWith("tag ")) {
+				tag.tag(line.substring(4));
+			}
+			if (line.startsWith("tagger")) {
+				tag.tagger(createCreator(line.substring(7)));
+			}
+			if (line.isEmpty()) {
+				String[] messageLines = ArrayUtils.subarray(lines, i + 1, lines.length);
+				tag.message(StringUtils.join(messageLines));
+				break;
+			}
+		}
+		return tag.build();
+	}
+
 	private Creator createCreator(String content) {
 		Pattern pattern = Pattern.compile("(.*) <(.*)> ([0-9]+) ([+-]?[0-9]+)");
 		Matcher matcher = pattern.matcher(content);
@@ -157,6 +185,39 @@ public class ObjectFactory {
 
 		public Commit build() {
 			return new Commit(tree, ImmutableList.copyOf(parents), author, committer, message);
+		}
+	}
+
+	private static class TagBuilder {
+
+		private ObjectId object;
+		private Type type;
+		private String tag;
+		private Creator tagger;
+		private String message;
+
+		public void object(ObjectId object) {
+			this.object = object;
+		}
+
+		public void type(Type type) {
+			this.type = type;
+		}
+
+		public void tag(String tag) {
+			this.tag = tag;
+		}
+
+		public void tagger(Creator tagger) {
+			this.tagger = tagger;
+		}
+
+		public void message(String message) {
+			this.message = message;
+		}
+
+		public Tag build() {
+			return new Tag(object, type, tag, tagger, message);
 		}
 	}
 }
