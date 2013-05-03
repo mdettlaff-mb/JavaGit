@@ -1,8 +1,12 @@
 package mdettlaff.javagit.core;
 
+import java.text.SimpleDateFormat;
+
 import org.joda.time.DateTime;
 
 public class Creator {
+
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	private final String name;
 	private final String email;
@@ -46,6 +50,14 @@ public class Creator {
 
 	@Override
 	public String toString() {
-		return new String(toByteArray());
+		StringBuilder builder = new StringBuilder();
+		builder.append(name);
+		builder.append(' ');
+		builder.append("<" + email + ">");
+		builder.append(' ');
+		builder.append(new SimpleDateFormat(DATE_FORMAT).format(date.toDate()));
+		builder.append(' ');
+		builder.append(timezone);
+		return builder.toString();
 	}
 }

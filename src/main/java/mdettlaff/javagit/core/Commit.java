@@ -58,6 +58,15 @@ public class Commit implements ObjectContent {
 
 	@Override
 	public String toString() {
-		return new String(toByteArray());
+		StringBuilder content = new StringBuilder();
+		content.append("tree " + tree + "\n");
+		for (ObjectId parent : parents) {
+			content.append("parent " + parent + "\n");
+		}
+		content.append("author " + author + "\n");
+		content.append("committer " + committer + "\n");
+		content.append('\n');
+		content.append(message + "\n");
+		return content.toString();
 	}
 }

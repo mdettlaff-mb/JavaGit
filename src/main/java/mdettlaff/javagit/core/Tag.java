@@ -53,6 +53,13 @@ public class Tag implements ObjectContent {
 
 	@Override
 	public String toString() {
-		return new String(toByteArray());
+		StringBuilder content = new StringBuilder();
+		content.append("object " + object + "\n");
+		content.append("type " + type.getLiteral() + "\n");
+		content.append("tag " + tag + "\n");
+		content.append("tagger " + tagger + "\n");
+		content.append('\n');
+		content.append(message + "\n");
+		return content.toString();
 	}
 }

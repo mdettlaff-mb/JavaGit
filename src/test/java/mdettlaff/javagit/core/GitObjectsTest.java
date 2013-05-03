@@ -90,8 +90,8 @@ public class GitObjectsTest {
 		StringBuilder builder = new StringBuilder();
 		builder.append("tree 5ddc4f4ddac21654260395b4767eaf43da4d0c63\n");
 		builder.append("parent 02151e56a26e2735264b95236e4d5a24dad9a8ac\n");
-		builder.append("author Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200\n");
-		builder.append("committer Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367506510 +0200\n");
+		builder.append("author Michał Dettlaff <mdettlaff@jitsolutions.pl> 2013-05-02 16:55:10 +0200\n");
+		builder.append("committer Michał Dettlaff <mdettlaff@jitsolutions.pl> 2013-05-02 16:55:10 +0200\n");
 		builder.append('\n');
 		builder.append("jar with dependencies\n");
 		assertEquals(builder.toString(), result.toString());
@@ -125,7 +125,7 @@ public class GitObjectsTest {
 		builder.append("object 3288381de6cfb6186c252237602e862137d5e796\n");
 		builder.append("type commit\n");
 		builder.append("tag 1.0\n");
-		builder.append("tagger Michał Dettlaff <mdettlaff@jitsolutions.pl> 1367568506 +0200\n");
+		builder.append("tagger Michał Dettlaff <mdettlaff@jitsolutions.pl> 2013-05-03 10:08:26 +0200\n");
 		builder.append('\n');
 		builder.append("my sample tag\n");
 		assertEquals(builder.toString(), result.toString());
