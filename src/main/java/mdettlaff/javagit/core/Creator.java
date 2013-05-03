@@ -37,15 +37,15 @@ public class Creator {
 	}
 
 	public byte[] toByteArray() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(name);
-		builder.append(' ');
-		builder.append("<" + email + ">");
-		builder.append(' ');
-		builder.append(date.getMillis() / 1000);
-		builder.append(' ');
-		builder.append(timezone);
-		return builder.toString().getBytes();
+		ByteArrayBuilder bytes = new ByteArrayBuilder();
+		bytes.string(name);
+		bytes.string(" ");
+		bytes.string("<").string(email).string(">");
+		bytes.string(" ");
+		bytes.string(String.valueOf(date.getMillis() / 1000));
+		bytes.string(" ");
+		bytes.string(timezone);
+		return bytes.build();
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class Creator {
 		StringBuilder builder = new StringBuilder();
 		builder.append(name);
 		builder.append(' ');
-		builder.append("<" + email + ">");
+		builder.append('<').append(email).append('>');
 		builder.append(' ');
 		builder.append(new SimpleDateFormat(DATE_FORMAT).format(date.toDate()));
 		builder.append(' ');

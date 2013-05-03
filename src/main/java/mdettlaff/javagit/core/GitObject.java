@@ -1,7 +1,5 @@
 package mdettlaff.javagit.core;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 
@@ -35,16 +33,19 @@ public class GitObject {
 	}
 
 	public byte[] toByteArray() {
-		return ArrayUtils.addAll(createHeader(), content.toByteArray());
+		ByteArrayBuilder bytes = new ByteArrayBuilder();
+		bytes.bytes(createHeader());
+		bytes.bytes(content.toByteArray());
+		return bytes.build();
 	}
 
 	private byte[] createHeader() {
-		StringBuilder header = new StringBuilder();
-		header.append(type.getLiteral());
-		header.append(' ');
-		header.append(size);
-		header.append((char) 0);
-		return header.toString().getBytes();
+		ByteArrayBuilder header = new ByteArrayBuilder();
+		header.string(type.getLiteral());
+		header.string(" ");
+		header.string(String.valueOf(size));
+		header.singleByte(0);
+		return header.build();
 	}
 
 	@Override

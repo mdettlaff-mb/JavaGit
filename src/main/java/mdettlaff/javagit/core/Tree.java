@@ -2,8 +2,6 @@ package mdettlaff.javagit.core;
 
 import java.util.List;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,7 +32,7 @@ public class Tree implements ObjectContent {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		for (Node node : nodes) {
-			builder.append(node + "\n");
+			builder.append(node).append('\n');
 		}
 		return builder.toString();
 	}
@@ -63,27 +61,25 @@ public class Tree implements ObjectContent {
 			return path;
 		}
 
+		public byte[] toByteArray() {
+			ByteArrayBuilder bytes = new ByteArrayBuilder();
+			bytes.string(mode.getLiteral());
+			bytes.string(" ");
+			bytes.string(path);
+			bytes.singleByte(0);
+			bytes.bytes(value.toByteArray());
+			return bytes.build();
+		}
+
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append(StringUtils.leftPad(mode.getLiteral(), 6, '0'));
 			builder.append(' ');
-			builder.append(value.getValue());
+			builder.append(value);
 			builder.append(' ');
 			builder.append(path);
 			return builder.toString();
-		}
-
-		public byte[] toByteArray() {
-			byte[] bytes = mode.getLiteral().getBytes();
-			bytes = ArrayUtils.add(bytes, (byte) ' ');
-			bytes = ArrayUtils.addAll(bytes, path.getBytes());
-			bytes = ArrayUtils.add(bytes, (byte) 0);
-			try {
-				return ArrayUtils.addAll(bytes, Hex.decodeHex(value.getValue().toCharArray()));
-			} catch (DecoderException e) {
-				throw new IllegalStateException("Invalid hex string", e);
-			}
 		}
 
 		public static enum Mode {

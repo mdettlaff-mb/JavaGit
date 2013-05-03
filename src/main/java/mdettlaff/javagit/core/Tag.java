@@ -40,26 +40,25 @@ public class Tag implements ObjectContent {
 
 	@Override
 	public byte[] toByteArray() {
-		StringBuilder content = new StringBuilder();
-		content.append("object " + object + "\n");
-		content.append("type " + type.getLiteral() + "\n");
-		content.append("tag " + tag + "\n");
-		content.append("tagger ");
-		content.append(new String(tagger.toByteArray()) + "\n");
-		content.append('\n');
-		content.append(message + "\n");
-		return content.toString().getBytes();
+		ByteArrayBuilder bytes = new ByteArrayBuilder();
+		bytes.field("object", object);
+		bytes.field("type", type.getLiteral());
+		bytes.field("tag", tag);
+		bytes.field("tagger", tagger.toByteArray());
+		bytes.newline();
+		bytes.line(message);
+		return bytes.build();
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder content = new StringBuilder();
-		content.append("object " + object + "\n");
-		content.append("type " + type.getLiteral() + "\n");
-		content.append("tag " + tag + "\n");
-		content.append("tagger " + tagger + "\n");
-		content.append('\n');
-		content.append(message + "\n");
-		return content.toString();
+		StringBuilder builder = new StringBuilder();
+		builder.append("object ").append(object).append('\n');
+		builder.append("type ").append(type.getLiteral()).append('\n');
+		builder.append("tag ").append(tag).append('\n');
+		builder.append("tagger ").append(tagger).append('\n');
+		builder.append('\n');
+		builder.append(message).append('\n');
+		return builder.toString();
 	}
 }

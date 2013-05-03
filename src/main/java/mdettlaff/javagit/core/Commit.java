@@ -42,31 +42,29 @@ public class Commit implements ObjectContent {
 
 	@Override
 	public byte[] toByteArray() {
-		StringBuilder content = new StringBuilder();
-		content.append("tree " + tree + "\n");
+		ByteArrayBuilder bytes = new ByteArrayBuilder();
+		bytes.field("tree", tree);
 		for (ObjectId parent : parents) {
-			content.append("parent " + parent + "\n");
+			bytes.field("parent", parent);
 		}
-		content.append("author ");
-		content.append(new String(author.toByteArray()) + "\n");
-		content.append("committer ");
-		content.append(new String(committer.toByteArray()) + "\n");
-		content.append('\n');
-		content.append(message + "\n");
-		return content.toString().getBytes();
+		bytes.field("author", author.toByteArray());
+		bytes.field("committer", committer.toByteArray());
+		bytes.newline();
+		bytes.line(message);
+		return bytes.build();
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder content = new StringBuilder();
-		content.append("tree " + tree + "\n");
+		StringBuilder builder = new StringBuilder();
+		builder.append("tree ").append(tree).append('\n');
 		for (ObjectId parent : parents) {
-			content.append("parent " + parent + "\n");
+			builder.append("parent ").append(parent).append('\n');
 		}
-		content.append("author " + author + "\n");
-		content.append("committer " + committer + "\n");
-		content.append('\n');
-		content.append(message + "\n");
-		return content.toString();
+		builder.append("author ").append(author).append('\n');
+		builder.append("committer ").append(committer).append('\n');
+		builder.append('\n');
+		builder.append(message).append('\n');
+		return builder.toString();
 	}
 }

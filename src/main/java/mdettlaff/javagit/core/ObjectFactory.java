@@ -83,7 +83,7 @@ public class ObjectFactory {
 
 	private Commit createCommit(byte[] content) {
 		CommitBuilder commit = new CommitBuilder();
-		String[] lines = new String(content).split("\n");
+		String[] lines = new String(content, ByteArrayBuilder.ENCODING).split("\n");
 		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
 			if (line.startsWith("tree")) {
@@ -109,7 +109,7 @@ public class ObjectFactory {
 
 	private Tag createTag(byte[] content) {
 		TagBuilder tag = new TagBuilder();
-		String[] lines = new String(content).split("\n");
+		String[] lines = new String(content, ByteArrayBuilder.ENCODING).split("\n");
 		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
 			if (line.startsWith("object")) {

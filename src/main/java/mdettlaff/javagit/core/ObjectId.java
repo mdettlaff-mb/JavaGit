@@ -2,6 +2,9 @@ package mdettlaff.javagit.core;
 
 import java.util.Objects;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+
 public class ObjectId {
 
 	private final String value;
@@ -12,6 +15,14 @@ public class ObjectId {
 
 	public String getValue() {
 		return value;
+	}
+
+	public byte[] toByteArray() {
+		try {
+			return Hex.decodeHex(value.toCharArray());
+		} catch (DecoderException e) {
+			throw new IllegalStateException("Invalid hex string", e);
+		}
 	}
 
 	@Override
