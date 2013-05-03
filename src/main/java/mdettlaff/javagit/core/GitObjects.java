@@ -23,15 +23,11 @@ public class GitObjects {
 	public GitObject read(ObjectId id) throws IOException {
 		String path = getPath(id);
 		Preconditions.checkArgument(filesystem.exists(path), "Unable to find object " + id);
-		InputStream input = filesystem.openInput(path.toString());
-		try {
-			input = new InflaterInputStream(input);
+		try (InputStream input = new InflaterInputStream(filesystem.openInput(path))) {
 			byte[] rawObject = IOUtils.toByteArray(input);
 			GitObject object = new ObjectFactory().create(rawObject);
 			verifyId(object, id);
 			return object;
-		} finally {
-			IOUtils.closeQuietly(input);
 		}
 	}
 
@@ -39,12 +35,8 @@ public class GitObjects {
 		ObjectId id = object.computeId();
 		String path = getPath(id);
 		if (!filesystem.exists(path)) {
-			OutputStream output = filesystem.openOutput(path.toString());
-			try {
-				output = new DeflaterOutputStream(output);
+			try (OutputStream output = new DeflaterOutputStream(filesystem.openOutput(path))) {
 				IOUtils.write(object.toByteArray(), output);
-			} finally {
-				IOUtils.closeQuietly(output);
 			}
 		}
 		return id;
