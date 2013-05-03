@@ -32,7 +32,7 @@ public class GitObjects {
 		}
 	}
 
-	public void write(GitObject object) throws IOException {
+	public ObjectId write(GitObject object) throws IOException {
 		ObjectId id = object.computeId();
 		String path = getPath(id);
 		if (!filesystem.exists(path)) {
@@ -44,6 +44,7 @@ public class GitObjects {
 				IOUtils.closeQuietly(output);
 			}
 		}
+		return id;
 	}
 
 	private String getPath(ObjectId id) {

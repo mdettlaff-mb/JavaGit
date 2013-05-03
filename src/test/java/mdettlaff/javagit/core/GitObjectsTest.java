@@ -145,10 +145,11 @@ public class GitObjectsTest {
 		when(filesystem.openOutput(".git/objects/3b/d1f0e29744a1f32b08d5650e62e2e62afb177c")).thenReturn(rawBlob);
 		GitObject object = new GitObject(Type.BLOB, 8, new Blob("foo\nbar\n".getBytes()));
 		// exercise
-		objects.write(object);
+		ObjectId result = objects.write(object);
 		// verify
 		byte[] expectedBlob = IOUtils.toByteArray(getClass().getResourceAsStream("blob"));
 		assertArrayEquals(expectedBlob, rawBlob.toByteArray());
+		assertEquals(new ObjectId("3bd1f0e29744a1f32b08d5650e62e2e62afb177c"), result);
 	}
 
 	@Test
@@ -162,10 +163,11 @@ public class GitObjectsTest {
 		ObjectContent tree = new Tree(nodes);
 		GitObject object = new GitObject(Type.TREE, 103, tree);
 		// exercise
-		objects.write(object);
+		ObjectId result = objects.write(object);
 		// verify
 		byte[] expectedTree = IOUtils.toByteArray(getClass().getResourceAsStream("tree"));
 		assertArrayEquals(expectedTree, rawTree.toByteArray());
+		assertEquals(new ObjectId("be42fc666262908364880b2c108ec02597d8b54a"), result);
 	}
 
 	@Test
@@ -180,10 +182,11 @@ public class GitObjectsTest {
 		Commit commit = new Commit(tree, parents, author, committer, message);
 		GitObject object = new GitObject(Type.COMMIT, 258, commit);
 		// exercise
-		objects.write(object);
+		ObjectId result = objects.write(object);
 		// verify
 		byte[] expectedCommit = IOUtils.toByteArray(getClass().getResourceAsStream("commit"));
 		assertArrayEquals(expectedCommit, rawCommit.toByteArray());
+		assertEquals(new ObjectId("b92ec3607cf250278ad82231564fbb2b92e34a79"), result);
 	}
 
 	private Creator prepareCreator() {
@@ -203,10 +206,11 @@ public class GitObjectsTest {
 		Tag tag = new Tag(tagObject, Type.COMMIT, "1.0", tagger, "my sample tag");
 		GitObject object = new GitObject(Type.TAG, 152, tag);
 		// exercise
-		objects.write(object);
+		ObjectId result = objects.write(object);
 		// verify
 		byte[] expectedTag = IOUtils.toByteArray(getClass().getResourceAsStream("tag"));
 		assertArrayEquals(expectedTag, rawTag.toByteArray());
+		assertEquals(new ObjectId("e22339445c0e1adfaaa55945569e992b3585812f"), result);
 	}
 
 	private Creator prepareTagger() {

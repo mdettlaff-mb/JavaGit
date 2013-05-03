@@ -22,8 +22,9 @@ public class HashObject implements Command {
 		GitObject object = new GitObject(Type.BLOB, content.length, new Blob(content));
 		boolean write = args.length > 0 && args[0].equals("-w");
 		if (write) {
-			objects.write(object);
+			System.out.println(objects.write(object));
+		} else {
+			System.out.println(object.computeId());
 		}
-		System.out.println(object.computeId());
 	}
 }
