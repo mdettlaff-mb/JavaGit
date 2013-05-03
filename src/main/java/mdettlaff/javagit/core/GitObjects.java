@@ -8,6 +8,8 @@ import java.util.zip.InflaterInputStream;
 
 import org.apache.commons.io.IOUtils;
 
+import com.google.common.base.Preconditions;
+
 public class GitObjects {
 
 	private static final String GIT_DIR = ".git";
@@ -20,6 +22,7 @@ public class GitObjects {
 
 	public GitObject read(ObjectId id) throws IOException {
 		String path = getPath(id);
+		Preconditions.checkArgument(filesystem.exists(path), "Unable to find object " + id);
 		InputStream input = filesystem.openInput(path.toString());
 		try {
 			input = new InflaterInputStream(input);

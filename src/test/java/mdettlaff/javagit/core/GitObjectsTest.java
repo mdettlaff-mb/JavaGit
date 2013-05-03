@@ -36,6 +36,7 @@ public class GitObjectsTest {
 	@Test
 	public void testReadBlob() throws Exception {
 		InputStream rawBlob = getClass().getResourceAsStream("blob");
+		when(filesystem.exists(".git/objects/3b/d1f0e29744a1f32b08d5650e62e2e62afb177c")).thenReturn(true);
 		when(filesystem.openInput(".git/objects/3b/d1f0e29744a1f32b08d5650e62e2e62afb177c")).thenReturn(rawBlob);
 		// exercise
 		GitObject result = objects.read(new ObjectId("3bd1f0e29744a1f32b08d5650e62e2e62afb177c"));
@@ -51,6 +52,7 @@ public class GitObjectsTest {
 	@Test
 	public void testReadTree() throws Exception {
 		InputStream rawTree = getClass().getResourceAsStream("tree");
+		when(filesystem.exists(".git/objects/be/42fc666262908364880b2c108ec02597d8b54a")).thenReturn(true);
 		when(filesystem.openInput(".git/objects/be/42fc666262908364880b2c108ec02597d8b54a")).thenReturn(rawTree);
 		// exercise
 		GitObject result = objects.read(new ObjectId("be42fc666262908364880b2c108ec02597d8b54a"));
@@ -72,6 +74,7 @@ public class GitObjectsTest {
 	@Test
 	public void testReadCommit() throws Exception {
 		InputStream rawCommit = getClass().getResourceAsStream("commit");
+		when(filesystem.exists(".git/objects/b9/2ec3607cf250278ad82231564fbb2b92e34a79")).thenReturn(true);
 		when(filesystem.openInput(".git/objects/b9/2ec3607cf250278ad82231564fbb2b92e34a79")).thenReturn(rawCommit);
 		// exercise
 		GitObject result = objects.read(new ObjectId("b92ec3607cf250278ad82231564fbb2b92e34a79"));
@@ -108,6 +111,7 @@ public class GitObjectsTest {
 	@Test
 	public void testReadTag() throws Exception {
 		InputStream rawTag = getClass().getResourceAsStream("tag");
+		when(filesystem.exists(".git/objects/e2/2339445c0e1adfaaa55945569e992b3585812f")).thenReturn(true);
 		when(filesystem.openInput(".git/objects/e2/2339445c0e1adfaaa55945569e992b3585812f")).thenReturn(rawTag);
 		// exercise
 		GitObject result = objects.read(new ObjectId("e22339445c0e1adfaaa55945569e992b3585812f"));

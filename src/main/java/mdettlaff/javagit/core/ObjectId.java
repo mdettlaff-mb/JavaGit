@@ -5,11 +5,14 @@ import java.util.Objects;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+import com.google.common.base.Preconditions;
+
 public class ObjectId {
 
 	private final String value;
 
 	public ObjectId(String value) {
+		Preconditions.checkArgument(value.length() == 40, "Invalid object ID: " + value);
 		this.value = value;
 	}
 
