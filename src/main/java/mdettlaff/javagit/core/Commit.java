@@ -42,6 +42,10 @@ public class Commit implements ObjectContent {
 		return message;
 	}
 
+	public boolean isMerge() {
+		return parents.size() > 1;
+	}
+
 	@Override
 	public byte[] toByteArray() {
 		ByteArrayBuilder bytes = new ByteArrayBuilder();
