@@ -22,11 +22,14 @@ public class Git implements Command {
 	}
 
 	private Command createCommand(String commandArgument) {
+		GitObjects objects = new GitObjects(new Filesystem());
 		switch (commandArgument) {
 		case "cat-file":
-			return new CatFile(new GitObjects(new Filesystem()));
+			return new CatFile(objects);
 		case "hash-object":
-			return new HashObject(new GitObjects(new Filesystem()));
+			return new HashObject(objects);
+		case "log":
+			return new Log(objects);
 		default:
 			throw new IllegalArgumentException("Unknown command: " + commandArgument);
 		}
