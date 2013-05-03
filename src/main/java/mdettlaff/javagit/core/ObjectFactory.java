@@ -10,7 +10,6 @@ import mdettlaff.javagit.core.GitObject.Type;
 import mdettlaff.javagit.core.Tree.Node;
 import mdettlaff.javagit.core.Tree.Node.Mode;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -77,7 +76,7 @@ public class ObjectFactory {
 		int pathLength = firstNullByteIndex - (firstSpaceIndex + 1);
 		String path = new String(content, firstSpaceIndex + 1, pathLength);
 		byte[] id = Arrays.copyOfRange(content, firstNullByteIndex + 1, content.length);
-		ObjectId value = new ObjectId(Hex.encodeHexString(id));
+		ObjectId value = new ObjectId(id);
 		return new Node(mode, value, path);
 	}
 

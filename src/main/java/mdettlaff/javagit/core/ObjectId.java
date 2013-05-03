@@ -13,6 +13,10 @@ public class ObjectId {
 		this.value = value;
 	}
 
+	public ObjectId(byte[] value) {
+		this(Hex.encodeHexString(value));
+	}
+
 	public String getValue() {
 		return value;
 	}
