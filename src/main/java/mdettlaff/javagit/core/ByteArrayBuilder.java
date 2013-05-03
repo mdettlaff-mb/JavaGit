@@ -2,11 +2,8 @@ package mdettlaff.javagit.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 class ByteArrayBuilder {
-
-	public static final Charset ENCODING = Charset.forName("UTF-8");
 
 	private ByteArrayOutputStream bytes;
 
@@ -58,7 +55,7 @@ class ByteArrayBuilder {
 	}
 
 	private byte[] toByteArray(String value) {
-		return value.getBytes(ENCODING);
+		return value.getBytes(Constants.ENCODING);
 	}
 
 	public byte[] build() {

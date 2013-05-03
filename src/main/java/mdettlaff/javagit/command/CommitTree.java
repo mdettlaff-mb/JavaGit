@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mdettlaff.javagit.core.Commit;
+import mdettlaff.javagit.core.Config;
 import mdettlaff.javagit.core.Creator;
 import mdettlaff.javagit.core.GitObject;
 import mdettlaff.javagit.core.GitObject.Type;
@@ -21,9 +22,11 @@ import com.google.common.collect.ImmutableList;
 public class CommitTree implements Command {
 
 	private final GitObjects objects;
+	private final Config config;
 
-	public CommitTree(GitObjects objects) {
+	public CommitTree(GitObjects objects, Config config) {
 		this.objects = objects;
+		this.config = config;
 	}
 
 	@Override
@@ -38,8 +41,8 @@ public class CommitTree implements Command {
 	}
 
 	private void commitTree(ObjectId tree, String message, List<ObjectId> parents) throws IOException {
-		String name = "Michał Dettlaff";
-		String email = "mdettlaff@jitsolutions.pl";
+		String name = config.get("user.name");
+		String email = config.get("user.email");
 		Creator author = new Creator(name, email, DateTime.now(), "+0200");
 		Commit commit = new Commit(tree, ImmutableList.copyOf(parents), author, author, message);
 		GitObject commitObject = new GitObject(Type.COMMIT, commit.toByteArray().length, commit);

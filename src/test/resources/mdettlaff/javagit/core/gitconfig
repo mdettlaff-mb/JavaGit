@@ -1,0 +1,10 @@
+[user]
+	email = mdettlaff@jitsolutions.pl
+	name = Michał Dettlaff
+[alias]
+	st = status -s
+	h = log --graph --decorate --oneline --date-order
+[color]
+	ui = true
+[merge]
+	conflictstyle = diff3

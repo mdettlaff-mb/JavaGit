@@ -1,5 +1,6 @@
 package mdettlaff.javagit.command;
 
+import mdettlaff.javagit.core.Config;
 import mdettlaff.javagit.core.Filesystem;
 import mdettlaff.javagit.core.GitObjects;
 
@@ -27,7 +28,10 @@ public class Git implements Command {
 	}
 
 	private Command createCommand(String commandArgument) {
-		GitObjects objects = new GitObjects(new Filesystem());
+		Filesystem filesystem = new Filesystem();
+		GitObjects objects = new GitObjects(filesystem);
+		String configPath = System.getProperty("user.home") + "/.gitconfig";
+		Config config = new Config(filesystem, configPath);
 		switch (commandArgument) {
 		case "cat-file":
 			return new CatFile(objects);
@@ -36,7 +40,7 @@ public class Git implements Command {
 		case "log":
 			return new Log(objects);
 		case "commit-tree":
-			return new CommitTree(objects);
+			return new CommitTree(objects, config);
 		default:
 			throw new IllegalArgumentException("Unknown command: " + commandArgument);
 		}
