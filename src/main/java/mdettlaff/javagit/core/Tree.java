@@ -2,7 +2,6 @@ package mdettlaff.javagit.core;
 
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.ImmutableList;
@@ -21,11 +20,11 @@ public class Tree implements ObjectContent {
 
 	@Override
 	public byte[] toByteArray() {
-		byte[] bytes = new byte[0];
+		ByteArrayBuilder bytes = new ByteArrayBuilder();
 		for (Node node : nodes) {
-			bytes = ArrayUtils.addAll(bytes, node.toByteArray());
+			bytes.bytes(node.toByteArray());
 		}
-		return bytes;
+		return bytes.build();
 	}
 
 	@Override
