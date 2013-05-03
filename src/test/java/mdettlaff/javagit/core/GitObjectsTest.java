@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import mdettlaff.javagit.core.GitObject.Type;
 import mdettlaff.javagit.core.Tree.Node;
 import mdettlaff.javagit.core.Tree.Node.Mode;
 
@@ -39,7 +40,7 @@ public class GitObjectsTest {
 		// exercise
 		GitObject result = objects.read(new ObjectId("3bd1f0e29744a1f32b08d5650e62e2e62afb177c"));
 		// verify
-		assertEquals(GitObject.Type.BLOB, result.getType());
+		assertEquals(Type.BLOB, result.getType());
 		assertEquals(8, result.getSize());
 		assertTrue("content is not a blob", result.getContent() instanceof Blob);
 		Blob blob = (Blob) result.getContent();
@@ -54,7 +55,7 @@ public class GitObjectsTest {
 		// exercise
 		GitObject result = objects.read(new ObjectId("be42fc666262908364880b2c108ec02597d8b54a"));
 		// verify
-		assertEquals(GitObject.Type.TREE, result.getType());
+		assertEquals(Type.TREE, result.getType());
 		assertEquals(103, result.getSize());
 		assertTrue("content is not a tree", result.getContent() instanceof Tree);
 		Tree tree = (Tree) result.getContent();
@@ -75,7 +76,7 @@ public class GitObjectsTest {
 		// exercise
 		GitObject result = objects.read(new ObjectId("b92ec3607cf250278ad82231564fbb2b92e34a79"));
 		// verify
-		assertEquals(GitObject.Type.COMMIT, result.getType());
+		assertEquals(Type.COMMIT, result.getType());
 		assertEquals(258, result.getSize());
 		assertTrue("content is not a commit", result.getContent() instanceof Commit);
 		Commit commit = (Commit) result.getContent();
@@ -108,7 +109,7 @@ public class GitObjectsTest {
 	public void testWriteBlob() throws Exception {
 		ByteArrayOutputStream rawBlob = new ByteArrayOutputStream();
 		when(filesystem.openOutput(".git/objects/3b/d1f0e29744a1f32b08d5650e62e2e62afb177c")).thenReturn(rawBlob);
-		GitObject object = new GitObject(GitObject.Type.BLOB, 8, new Blob("foo\nbar\n".getBytes()));
+		GitObject object = new GitObject(Type.BLOB, 8, new Blob("foo\nbar\n".getBytes()));
 		// exercise
 		objects.write(object);
 		// verify
@@ -125,7 +126,7 @@ public class GitObjectsTest {
 		Node node3 = new Node(Mode.DIRECTORY, new ObjectId("4eb25976ed157dd9fba6532b60bfb10cc02dce28"), "src");
 		ImmutableList<Node> nodes = ImmutableList.of(node1, node2, node3);
 		ObjectContent tree = new Tree(nodes);
-		GitObject object = new GitObject(GitObject.Type.TREE, 103, tree);
+		GitObject object = new GitObject(Type.TREE, 103, tree);
 		// exercise
 		objects.write(object);
 		// verify
@@ -143,7 +144,7 @@ public class GitObjectsTest {
 		Creator committer = prepareCreator();
 		String message = "jar with dependencies";
 		Commit commit = new Commit(tree, parents, author, committer, message);
-		GitObject object = new GitObject(GitObject.Type.COMMIT, 258, commit);
+		GitObject object = new GitObject(Type.COMMIT, 258, commit);
 		// exercise
 		objects.write(object);
 		// verify

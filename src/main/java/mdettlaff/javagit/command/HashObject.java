@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import mdettlaff.javagit.core.Blob;
 import mdettlaff.javagit.core.GitObject;
+import mdettlaff.javagit.core.GitObject.Type;
 import mdettlaff.javagit.core.GitObjects;
 
 import org.apache.commons.io.IOUtils;
@@ -18,7 +19,7 @@ public class HashObject implements Command {
 
 	public void execute(String[] args) throws IOException {
 		byte[] content = IOUtils.toByteArray(System.in);
-		GitObject object = new GitObject(GitObject.Type.BLOB, content.length, new Blob(content));
+		GitObject object = new GitObject(Type.BLOB, content.length, new Blob(content));
 		boolean write = args.length > 0 && args[0].equals("-w");
 		if (write) {
 			objects.write(object);

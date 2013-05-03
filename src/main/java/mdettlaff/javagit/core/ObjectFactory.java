@@ -29,7 +29,7 @@ public class ObjectFactory {
 		int size = Integer.valueOf(new String(rawObject, firstSpaceIndex + 1, sizeLength));
 		byte[] content = Arrays.copyOfRange(rawObject, firstNullByteIndex + 1, rawObject.length);
 		verifySize(content, size);
-		Type type = GitObject.Type.getByLiteral(typeLiteral);
+		Type type = Type.getByLiteral(typeLiteral);
 		ObjectContent objectContent = createContent(type, content);
 		return new GitObject(type, size, objectContent);
 	}
