@@ -1,6 +1,7 @@
 package mdettlaff.javagit.command;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import mdettlaff.javagit.core.Filesystem;
 import mdettlaff.javagit.core.GitObjects;
@@ -13,12 +14,16 @@ public class Git implements Command {
 
 	@Override
 	public void execute(String[] args) throws Exception {
-		if (args.length == 0) {
-			throw new IllegalArgumentException("No command specified");
+		try {
+			if (args.length == 0) {
+				throw new IllegalArgumentException("No command specified");
+			}
+			String commandArgument = args[0];
+			Command command = createCommand(commandArgument);
+			command.execute(ArrayUtils.remove(args, 0));
+		} catch (Exception e) {
+			handleExceptions(e);
 		}
-		String commandArgument = args[0];
-		Command command = createCommand(commandArgument);
-		command.execute(ArrayUtils.remove(args, 0));
 	}
 
 	private Command createCommand(String commandArgument) {
@@ -32,6 +37,14 @@ public class Git implements Command {
 			return new Log(objects);
 		default:
 			throw new IllegalArgumentException("Unknown command: " + commandArgument);
+		}
+	}
+
+	private void handleExceptions(Exception e) throws Exception {
+		if (StringUtils.isNotBlank(e.getMessage())) {
+			System.err.println("error: " + e.getMessage());
+		} else {
+			throw e;
 		}
 	}
 }
