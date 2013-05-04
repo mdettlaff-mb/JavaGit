@@ -7,7 +7,6 @@ import mdettlaff.javagit.common.FilesWrapper;
 import mdettlaff.javagit.config.Config;
 import mdettlaff.javagit.object.GitObjects;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Preconditions;
@@ -16,7 +15,7 @@ public class Git implements Command {
 
 	public static void main(String[] args) {
 		try {
-			new Git().execute(args);
+			new Git().execute(new Arguments(args));
 		} catch (Exception e) {
 			handleExceptions(e);
 			System.exit(1);
@@ -32,11 +31,12 @@ public class Git implements Command {
 	}
 
 	@Override
-	public void execute(String[] args) throws Exception {
-		Preconditions.checkArgument(args.length > 0, "No command specified");
-		String commandArgument = args[0];
+	public void execute(Arguments args) throws Exception {
+		Preconditions.checkArgument(!args.getParameters().isEmpty(), "No command specified");
+		String commandArgument = args.getParameters().get(0);
 		Command command = createCommand(commandArgument);
-		command.execute(ArrayUtils.remove(args, 0));
+		args.getParameters().remove(0);
+		command.execute(args);
 	}
 
 	private Command createCommand(String commandArgument) {

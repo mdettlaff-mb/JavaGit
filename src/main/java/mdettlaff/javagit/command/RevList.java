@@ -10,9 +10,9 @@ import java.util.Set;
 
 import mdettlaff.javagit.object.Commit;
 import mdettlaff.javagit.object.GitObject;
+import mdettlaff.javagit.object.GitObject.Type;
 import mdettlaff.javagit.object.GitObjects;
 import mdettlaff.javagit.object.ObjectId;
-import mdettlaff.javagit.object.GitObject.Type;
 
 import com.google.common.base.Preconditions;
 
@@ -32,12 +32,13 @@ public class RevList implements Command {
 	}
 
 	@Override
-	public void execute(String[] args) throws IOException {
-		Preconditions.checkArgument(args.length > 0, "Object ID parameter is required");
-		boolean showMerges = !(args.length > 1 && args[1].equals("--no-merges"));
-		List<ObjectId> ids = execute(new ObjectId(args[0]), showMerges);
-		for (ObjectId id : ids) {
-			System.out.println(id);
+	public void execute(Arguments args) throws IOException {
+		Preconditions.checkArgument(!args.getParameters().isEmpty(), "Object ID parameter is required");
+		ObjectId id = new ObjectId(args.getParameters().get(0));
+		boolean showMerges = args.isOptionSet("no-merges");
+		List<ObjectId> ids = execute(id, showMerges);
+		for (ObjectId currentId : ids) {
+			System.out.println(currentId);
 		}
 	}
 

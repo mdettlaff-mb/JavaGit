@@ -25,10 +25,10 @@ public class Log implements Command {
 	}
 
 	@Override
-	public void execute(String[] args) throws IOException {
-		Preconditions.checkArgument(args.length > 0, "Object ID parameter is required");
-		boolean showMerges = !(args.length > 1 && args[1].equals("--no-merges"));
-		ObjectId id = new ObjectId(args[0]);
+	public void execute(Arguments args) throws IOException {
+		Preconditions.checkArgument(!args.getParameters().isEmpty(), "Object ID parameter is required");
+		ObjectId id = new ObjectId(args.getParameters().get(0));
+		boolean showMerges = args.isOptionSet("no-merges");
 		List<ObjectId> ids = revList.execute(id, showMerges);
 		execute(ids);
 	}

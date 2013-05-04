@@ -17,10 +17,15 @@ public class CatFile implements Command {
 	}
 
 	@Override
-	public void execute(String[] args) throws IOException {
-		Preconditions.checkArgument(args.length > 0, "Object ID parameter is required");
-		ObjectId id = new ObjectId(args[0]);
+	public void execute(Arguments args) throws IOException {
+		Preconditions.checkArgument(!args.getParameters().isEmpty(), "Object ID parameter is required");
+		ObjectId id = new ObjectId(args.getParameters().get(0));
+		boolean prettyPrint = args.isOptionSet("p");
 		GitObject object = objects.read(id);
-		System.out.print(object);
+		if (prettyPrint) {
+			System.out.print(object);
+		} else {
+			System.out.print(new String(object.getContent().toByteArray()));
+		}
 	}
 }

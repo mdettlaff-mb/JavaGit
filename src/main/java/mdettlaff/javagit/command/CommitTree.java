@@ -13,7 +13,6 @@ import mdettlaff.javagit.object.GitObjects;
 import mdettlaff.javagit.object.ObjectId;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.joda.time.DateTime;
 
 import com.google.common.base.Preconditions;
@@ -30,15 +29,22 @@ public class CommitTree implements Command {
 	}
 
 	@Override
-	public void execute(String[] args) throws IOException {
-		Preconditions.checkArgument(args.length > 0, "Tree object ID parameter is required");
+	public void execute(Arguments args) throws IOException {
+		List<String> parameters = args.getParameters();
+		Preconditions.checkArgument(!parameters.isEmpty(), "Tree object ID parameter is required");
 		String message = IOUtils.toString(System.in).trim();
+		ObjectId tree = new ObjectId(parameters.get(0));
+		List<ObjectId> parents = getParents(parameters);
+		ObjectId commitObjectId = execute(tree, message, parents);
+		System.out.println(commitObjectId);
+	}
+
+	private List<ObjectId> getParents(List<String> parameters) {
 		List<ObjectId> parents = new ArrayList<>();
-		for (String parentArgument : ArrayUtils.remove(args, 0)) {
+		for (String parentArgument : parameters.subList(1, parameters.size())) {
 			parents.add(new ObjectId(parentArgument));
 		}
-		ObjectId id = execute(new ObjectId(args[0]), message, parents);
-		System.out.println(id);
+		return parents;
 	}
 
 	public ObjectId execute(ObjectId tree, String message, List<ObjectId> parents) throws IOException {

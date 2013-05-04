@@ -18,8 +18,8 @@ public class HashObject implements Command {
 	}
 
 	@Override
-	public void execute(String[] args) throws IOException {
-		boolean write = args.length > 0 && args[0].equals("-w");
+	public void execute(Arguments args) throws IOException {
+		boolean write = args.isOptionSet("w");
 		byte[] content = IOUtils.toByteArray(System.in);
 		GitObject object = new GitObject(Type.BLOB, content.length, new Blob(content));
 		if (write) {
