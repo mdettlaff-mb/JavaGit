@@ -1,9 +1,6 @@
 package mdettlaff.javagit.config;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,22 +35,18 @@ public class Config {
 	private void init() throws IOException {
 		Preconditions.checkState(files.exists(path), "Config file not found in: " + path);
 		values = new HashMap<>();
-		Reader reader = new InputStreamReader(files.newInputStream(path));
-		try (BufferedReader bufferedReader = new BufferedReader(reader)) {
-			String prefix = "";
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				Matcher sectionMatcher = Pattern.compile("\\[(.+)]").matcher(line);
-				if (sectionMatcher.matches()) {
-					prefix = sectionMatcher.group(1);
-					continue;
-				}
-				Matcher propertyMatcher = Pattern.compile("(.+)=(.+)").matcher(line);
-				if (propertyMatcher.matches()) {
-					String key = prefix + "." + propertyMatcher.group(1).trim();
-					String value = propertyMatcher.group(2).trim();
-					values.put(key, value);
-				}
+		String prefix = "";
+		for (String line : files.readAllLines(path)) {
+			Matcher sectionMatcher = Pattern.compile("\\[(.+)]").matcher(line);
+			if (sectionMatcher.matches()) {
+				prefix = sectionMatcher.group(1);
+				continue;
+			}
+			Matcher propertyMatcher = Pattern.compile("(.+)=(.+)").matcher(line);
+			if (propertyMatcher.matches()) {
+				String key = prefix + "." + propertyMatcher.group(1).trim();
+				String value = propertyMatcher.group(2).trim();
+				values.put(key, value);
 			}
 		}
 	}

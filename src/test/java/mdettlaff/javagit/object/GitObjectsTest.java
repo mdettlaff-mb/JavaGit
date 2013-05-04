@@ -153,7 +153,7 @@ public class GitObjectsTest {
 		// exercise
 		ObjectId result = objects.write(object);
 		// verify
-		byte[] expectedBlob = IOUtils.toByteArray(getClass().getResourceAsStream("blob"));
+		byte[] expectedBlob = IOUtils.toByteArray(getClass().getResource("blob"));
 		assertArrayEquals(expectedBlob, rawBlob.toByteArray());
 		assertEquals(new ObjectId("3bd1f0e29744a1f32b08d5650e62e2e62afb177c"), result);
 	}
@@ -171,7 +171,7 @@ public class GitObjectsTest {
 		// exercise
 		ObjectId result = objects.write(object);
 		// verify
-		byte[] expectedTree = IOUtils.toByteArray(getClass().getResourceAsStream("tree"));
+		byte[] expectedTree = IOUtils.toByteArray(getClass().getResource("tree"));
 		assertArrayEquals(expectedTree, rawTree.toByteArray());
 		assertEquals(new ObjectId("be42fc666262908364880b2c108ec02597d8b54a"), result);
 	}
@@ -190,7 +190,7 @@ public class GitObjectsTest {
 		// exercise
 		ObjectId result = objects.write(object);
 		// verify
-		byte[] expectedCommit = IOUtils.toByteArray(getClass().getResourceAsStream("commit"));
+		byte[] expectedCommit = IOUtils.toByteArray(getClass().getResource("commit"));
 		assertArrayEquals(expectedCommit, rawCommit.toByteArray());
 		assertEquals(new ObjectId("b92ec3607cf250278ad82231564fbb2b92e34a79"), result);
 	}
@@ -214,7 +214,7 @@ public class GitObjectsTest {
 		// exercise
 		ObjectId result = objects.write(object);
 		// verify
-		byte[] expectedTag = IOUtils.toByteArray(getClass().getResourceAsStream("tag"));
+		byte[] expectedTag = IOUtils.toByteArray(getClass().getResource("tag"));
 		assertArrayEquals(expectedTag, rawTag.toByteArray());
 		assertEquals(new ObjectId("e22339445c0e1adfaaa55945569e992b3585812f"), result);
 	}

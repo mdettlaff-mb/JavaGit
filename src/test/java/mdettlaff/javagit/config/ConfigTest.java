@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import mdettlaff.javagit.common.FilesWrapper;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,13 +29,12 @@ public class ConfigTest {
 
 	@Test
 	public void test() throws Exception {
-		prepareStream();
+		String configContent = IOUtils.toString(getClass().getResource("gitconfig"));
+		when(files.exists(CONFIG_PATH)).thenReturn(true);
+		when(files.readAllLines(CONFIG_PATH)).thenReturn(Arrays.asList(configContent.split("\n")));
 		assertEquals("Michał Dettlaff", config.get("user.name"));
-		prepareStream();
 		assertEquals("mdettlaff@jitsolutions.pl", config.get("user.email"));
-		prepareStream();
 		assertEquals("true", config.get("color.ui"));
-		prepareStream();
 		assertEquals("diff3", config.get("merge.conflictstyle"));
 	}
 
@@ -43,11 +42,5 @@ public class ConfigTest {
 	public void testThrowingExceptionWhenConfigFileNotFound() throws Exception {
 		when(files.exists(CONFIG_PATH)).thenReturn(false);
 		config.get("user.name");
-	}
-
-	private void prepareStream() throws IOException {
-		InputStream configContent = getClass().getResourceAsStream("gitconfig");
-		when(files.exists(CONFIG_PATH)).thenReturn(true);
-		when(files.newInputStream(CONFIG_PATH)).thenReturn(configContent);
 	}
 }
