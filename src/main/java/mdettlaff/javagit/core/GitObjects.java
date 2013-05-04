@@ -3,6 +3,8 @@ package mdettlaff.javagit.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -14,16 +16,16 @@ public class GitObjects {
 
 	private static final String GIT_DIR = ".git";
 
-	private final Filesystem filesystem;
+	private final FilesWrapper files;
 
-	public GitObjects(Filesystem filesystem) {
-		this.filesystem = filesystem;
+	public GitObjects(FilesWrapper files) {
+		this.files = files;
 	}
 
 	public GitObject read(ObjectId id) throws IOException {
-		String path = getPath(id);
-		Preconditions.checkArgument(filesystem.exists(path), "Unable to find object " + id);
-		try (InputStream input = new InflaterInputStream(filesystem.openInput(path))) {
+		Path path = getPath(id);
+		Preconditions.checkArgument(files.exists(path), "Unable to find object " + id);
+		try (InputStream input = new InflaterInputStream(files.newInputStream(path))) {
 			byte[] rawObject = IOUtils.toByteArray(input);
 			GitObject object = new ObjectFactory().create(rawObject);
 			verifyId(object, id);
@@ -33,25 +35,19 @@ public class GitObjects {
 
 	public ObjectId write(GitObject object) throws IOException {
 		ObjectId id = object.computeId();
-		String path = getPath(id);
-		if (!filesystem.exists(path)) {
-			try (OutputStream output = new DeflaterOutputStream(filesystem.openOutput(path))) {
+		Path path = getPath(id);
+		if (!files.exists(path)) {
+			try (OutputStream output = new DeflaterOutputStream(files.newOutputStream(path))) {
 				IOUtils.write(object.toByteArray(), output);
 			}
 		}
 		return id;
 	}
 
-	private String getPath(ObjectId id) {
-		StringBuilder path = new StringBuilder();
-		path.append(GIT_DIR);
-		path.append("/");
-		path.append("objects");
-		path.append("/");
-		path.append(id.getValue().substring(0, 2));
-		path.append("/");
-		path.append(id.getValue().substring(2));
-		return path.toString();
+	private Path getPath(ObjectId id) {
+		String prefix = id.getValue().substring(0, 2);
+		String suffix = id.getValue().substring(2);
+		return Paths.get(GIT_DIR, "objects", prefix, suffix);
 	}
 
 	private void verifyId(GitObject object, ObjectId id) {

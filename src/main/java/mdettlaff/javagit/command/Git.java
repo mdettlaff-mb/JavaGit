@@ -1,7 +1,10 @@
 package mdettlaff.javagit.command;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import mdettlaff.javagit.core.Config;
-import mdettlaff.javagit.core.Filesystem;
+import mdettlaff.javagit.core.FilesWrapper;
 import mdettlaff.javagit.core.GitObjects;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,10 +31,10 @@ public class Git implements Command {
 	}
 
 	private Command createCommand(String commandArgument) {
-		Filesystem filesystem = new Filesystem();
-		GitObjects objects = new GitObjects(filesystem);
-		String configPath = System.getProperty("user.home") + "/.gitconfig";
-		Config config = new Config(filesystem, configPath);
+		FilesWrapper files = new FilesWrapper();
+		GitObjects objects = new GitObjects(files);
+		Path configPath = Paths.get(System.getProperty("user.home"), ".gitconfig");
+		Config config = new Config(files, configPath);
 		switch (commandArgument) {
 		case "cat-file":
 			return new CatFile(objects);

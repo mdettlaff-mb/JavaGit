@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -13,12 +14,13 @@ import com.google.common.base.Preconditions;
 
 public class Config {
 
-	private final Filesystem filesystem;
-	private final String path;
+	private final FilesWrapper files;
+	private final Path path;
+
 	private Map<String, String> values;
 
-	public Config(Filesystem filesystem, String path) {
-		this.filesystem = filesystem;
+	public Config(FilesWrapper files, Path path) {
+		this.files = files;
 		this.path = path;
 	}
 
@@ -32,9 +34,9 @@ public class Config {
 	}
 
 	private void init() throws IOException {
-		Preconditions.checkState(filesystem.exists(path), "Config file not found in: " + path);
+		Preconditions.checkState(files.exists(path), "Config file not found in: " + path);
 		values = new HashMap<>();
-		Reader reader = new InputStreamReader(filesystem.openInput(path), Constants.ENCODING);
+		Reader reader = new InputStreamReader(files.newInputStream(path), Constants.ENCODING);
 		try (BufferedReader bufferedReader = new BufferedReader(reader)) {
 			String prefix = "";
 			String line;

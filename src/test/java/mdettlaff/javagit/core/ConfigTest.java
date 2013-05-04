@@ -6,19 +6,23 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class ConfigTest {
 
-	private Filesystem filesystem;
+	private static final Path CONFIG_PATH = Paths.get("~", ".gitconfig");
+
+	private FilesWrapper files;
 	private Config config;
 
 	@Before
 	public void setUp() {
-		filesystem = mock(Filesystem.class);
-		config = new Config(filesystem, "~/.gitconfig");
+		files = mock(FilesWrapper.class);
+		config = new Config(files, CONFIG_PATH);
 	}
 
 	@Test
@@ -35,13 +39,13 @@ public class ConfigTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void testThrowingExceptionWhenConfigFileNotFound() throws Exception {
-		when(filesystem.exists("~/.gitconfig")).thenReturn(false);
+		when(files.exists(CONFIG_PATH)).thenReturn(false);
 		config.get("user.name");
 	}
 
 	private void prepareStream() throws IOException {
 		InputStream configContent = getClass().getResourceAsStream("gitconfig");
-		when(filesystem.exists("~/.gitconfig")).thenReturn(true);
-		when(filesystem.openInput("~/.gitconfig")).thenReturn(configContent);
+		when(files.exists(CONFIG_PATH)).thenReturn(true);
+		when(files.newInputStream(CONFIG_PATH)).thenReturn(configContent);
 	}
 }

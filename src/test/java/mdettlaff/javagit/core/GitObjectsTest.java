@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.List;
 
 import mdettlaff.javagit.core.GitObject.Type;
@@ -24,20 +25,20 @@ import com.google.common.collect.ImmutableList;
 
 public class GitObjectsTest {
 
-	private Filesystem filesystem;
+	private FilesWrapper files;
 	private GitObjects objects;
 
 	@Before
 	public void setUp() {
-		filesystem = mock(Filesystem.class);
-		objects = new GitObjects(filesystem);
+		files = mock(FilesWrapper.class);
+		objects = new GitObjects(files);
 	}
 
 	@Test
 	public void testReadBlob() throws Exception {
 		InputStream rawBlob = getClass().getResourceAsStream("blob");
-		when(filesystem.exists(".git/objects/3b/d1f0e29744a1f32b08d5650e62e2e62afb177c")).thenReturn(true);
-		when(filesystem.openInput(".git/objects/3b/d1f0e29744a1f32b08d5650e62e2e62afb177c")).thenReturn(rawBlob);
+		when(files.exists(Paths.get(".git", "objects", "3b", "d1f0e29744a1f32b08d5650e62e2e62afb177c"))).thenReturn(true);
+		when(files.newInputStream(Paths.get(".git", "objects", "3b", "d1f0e29744a1f32b08d5650e62e2e62afb177c"))).thenReturn(rawBlob);
 		// exercise
 		GitObject result = objects.read(new ObjectId("3bd1f0e29744a1f32b08d5650e62e2e62afb177c"));
 		// verify
@@ -52,8 +53,8 @@ public class GitObjectsTest {
 	@Test
 	public void testReadTree() throws Exception {
 		InputStream rawTree = getClass().getResourceAsStream("tree");
-		when(filesystem.exists(".git/objects/be/42fc666262908364880b2c108ec02597d8b54a")).thenReturn(true);
-		when(filesystem.openInput(".git/objects/be/42fc666262908364880b2c108ec02597d8b54a")).thenReturn(rawTree);
+		when(files.exists(Paths.get(".git", "objects", "be", "42fc666262908364880b2c108ec02597d8b54a"))).thenReturn(true);
+		when(files.newInputStream(Paths.get(".git", "objects", "be", "42fc666262908364880b2c108ec02597d8b54a"))).thenReturn(rawTree);
 		// exercise
 		GitObject result = objects.read(new ObjectId("be42fc666262908364880b2c108ec02597d8b54a"));
 		// verify
@@ -74,8 +75,8 @@ public class GitObjectsTest {
 	@Test
 	public void testReadCommit() throws Exception {
 		InputStream rawCommit = getClass().getResourceAsStream("commit");
-		when(filesystem.exists(".git/objects/b9/2ec3607cf250278ad82231564fbb2b92e34a79")).thenReturn(true);
-		when(filesystem.openInput(".git/objects/b9/2ec3607cf250278ad82231564fbb2b92e34a79")).thenReturn(rawCommit);
+		when(files.exists(Paths.get(".git", "objects", "b9", "2ec3607cf250278ad82231564fbb2b92e34a79"))).thenReturn(true);
+		when(files.newInputStream(Paths.get(".git", "objects", "b9", "2ec3607cf250278ad82231564fbb2b92e34a79"))).thenReturn(rawCommit);
 		// exercise
 		GitObject result = objects.read(new ObjectId("b92ec3607cf250278ad82231564fbb2b92e34a79"));
 		// verify
@@ -111,8 +112,8 @@ public class GitObjectsTest {
 	@Test
 	public void testReadTag() throws Exception {
 		InputStream rawTag = getClass().getResourceAsStream("tag");
-		when(filesystem.exists(".git/objects/e2/2339445c0e1adfaaa55945569e992b3585812f")).thenReturn(true);
-		when(filesystem.openInput(".git/objects/e2/2339445c0e1adfaaa55945569e992b3585812f")).thenReturn(rawTag);
+		when(files.exists(Paths.get(".git", "objects", "e2", "2339445c0e1adfaaa55945569e992b3585812f"))).thenReturn(true);
+		when(files.newInputStream(Paths.get(".git", "objects", "e2", "2339445c0e1adfaaa55945569e992b3585812f"))).thenReturn(rawTag);
 		// exercise
 		GitObject result = objects.read(new ObjectId("e22339445c0e1adfaaa55945569e992b3585812f"));
 		// verify
@@ -146,7 +147,7 @@ public class GitObjectsTest {
 	@Test
 	public void testWriteBlob() throws Exception {
 		ByteArrayOutputStream rawBlob = new ByteArrayOutputStream();
-		when(filesystem.openOutput(".git/objects/3b/d1f0e29744a1f32b08d5650e62e2e62afb177c")).thenReturn(rawBlob);
+		when(files.newOutputStream(Paths.get(".git", "objects", "3b", "d1f0e29744a1f32b08d5650e62e2e62afb177c"))).thenReturn(rawBlob);
 		GitObject object = new GitObject(Type.BLOB, 8, new Blob("foo\nbar\n".getBytes()));
 		// exercise
 		ObjectId result = objects.write(object);
@@ -159,7 +160,7 @@ public class GitObjectsTest {
 	@Test
 	public void testWriteTree() throws Exception {
 		ByteArrayOutputStream rawTree = new ByteArrayOutputStream();
-		when(filesystem.openOutput(".git/objects/be/42fc666262908364880b2c108ec02597d8b54a")).thenReturn(rawTree);
+		when(files.newOutputStream(Paths.get(".git", "objects", "be", "42fc666262908364880b2c108ec02597d8b54a"))).thenReturn(rawTree);
 		Node node1 = new Node(Mode.NORMAL, new ObjectId("6433b6766d8372901881148308f0d000c8c416f8"), ".gitignore");
 		Node node2 = new Node(Mode.EXECUTABLE, new ObjectId("f3f38869887ba7ba6ce945a35873f638e5c48f8b"), "pom.xml");
 		Node node3 = new Node(Mode.DIRECTORY, new ObjectId("4eb25976ed157dd9fba6532b60bfb10cc02dce28"), "src");
@@ -177,7 +178,7 @@ public class GitObjectsTest {
 	@Test
 	public void testWriteCommit() throws Exception {
 		ByteArrayOutputStream rawCommit = new ByteArrayOutputStream();
-		when(filesystem.openOutput(".git/objects/b9/2ec3607cf250278ad82231564fbb2b92e34a79")).thenReturn(rawCommit);
+		when(files.newOutputStream(Paths.get(".git", "objects", "b9", "2ec3607cf250278ad82231564fbb2b92e34a79"))).thenReturn(rawCommit);
 		ObjectId tree = new ObjectId("5ddc4f4ddac21654260395b4767eaf43da4d0c63");
 		ImmutableList<ObjectId> parents = ImmutableList.of(new ObjectId("02151e56a26e2735264b95236e4d5a24dad9a8ac"));
 		Creator author = prepareCreator();
@@ -204,7 +205,7 @@ public class GitObjectsTest {
 	@Test
 	public void testWriteTag() throws Exception {
 		ByteArrayOutputStream rawTag = new ByteArrayOutputStream();
-		when(filesystem.openOutput(".git/objects/e2/2339445c0e1adfaaa55945569e992b3585812f")).thenReturn(rawTag);
+		when(files.newOutputStream(Paths.get(".git", "objects", "e2", "2339445c0e1adfaaa55945569e992b3585812f"))).thenReturn(rawTag);
 		ObjectId tagObject = new ObjectId("3288381de6cfb6186c252237602e862137d5e796");
 		Creator tagger = prepareTagger();
 		Tag tag = new Tag(tagObject, Type.COMMIT, "1.0", tagger, "my sample tag");
