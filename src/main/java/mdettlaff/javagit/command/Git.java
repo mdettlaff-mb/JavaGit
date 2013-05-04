@@ -14,20 +14,29 @@ import com.google.common.base.Preconditions;
 
 public class Git implements Command {
 
-	public static void main(String[] args) throws Exception {
-		new Git().execute(args);
+	public static void main(String[] args) {
+		try {
+			new Git().execute(args);
+		} catch (Exception e) {
+			handleExceptions(e);
+			System.exit(1);
+		}
+	}
+
+	private static void handleExceptions(Exception e) {
+		if (StringUtils.isNotBlank(e.getMessage())) {
+			System.err.println("error: " + e.getMessage());
+		} else {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void execute(String[] args) throws Exception {
-		try {
-			Preconditions.checkArgument(args.length > 0, "No command specified");
-			String commandArgument = args[0];
-			Command command = createCommand(commandArgument);
-			command.execute(ArrayUtils.remove(args, 0));
-		} catch (Exception e) {
-			handleExceptions(e);
-		}
+		Preconditions.checkArgument(args.length > 0, "No command specified");
+		String commandArgument = args[0];
+		Command command = createCommand(commandArgument);
+		command.execute(ArrayUtils.remove(args, 0));
 	}
 
 	private Command createCommand(String commandArgument) {
@@ -46,14 +55,6 @@ public class Git implements Command {
 			return new CommitTree(objects, config);
 		default:
 			throw new IllegalArgumentException("Unknown command: " + commandArgument);
-		}
-	}
-
-	private void handleExceptions(Exception e) throws Exception {
-		if (StringUtils.isNotBlank(e.getMessage())) {
-			System.err.println("error: " + e.getMessage());
-		} else {
-			throw e;
 		}
 	}
 }
