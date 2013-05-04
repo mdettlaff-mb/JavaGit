@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import mdettlaff.javagit.core.Commit;
-import mdettlaff.javagit.core.Config;
-import mdettlaff.javagit.core.Creator;
-import mdettlaff.javagit.core.GitObject;
-import mdettlaff.javagit.core.GitObject.Type;
-import mdettlaff.javagit.core.GitObjects;
-import mdettlaff.javagit.core.ObjectId;
+import mdettlaff.javagit.config.Config;
+import mdettlaff.javagit.object.Commit;
+import mdettlaff.javagit.object.Creator;
+import mdettlaff.javagit.object.GitObject;
+import mdettlaff.javagit.object.GitObject.Type;
+import mdettlaff.javagit.object.GitObjects;
+import mdettlaff.javagit.object.ObjectId;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;

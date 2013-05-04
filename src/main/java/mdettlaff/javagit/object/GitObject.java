@@ -1,4 +1,4 @@
-package mdettlaff.javagit.core;
+package mdettlaff.javagit.object;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;

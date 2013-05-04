@@ -1,6 +1,6 @@
-package mdettlaff.javagit.core;
+package mdettlaff.javagit.object;
 
-import mdettlaff.javagit.core.GitObject.Type;
+import mdettlaff.javagit.object.GitObject.Type;
 
 public class Tag implements ObjectContent {
 

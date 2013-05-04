@@ -1,4 +1,4 @@
-package mdettlaff.javagit.core;
+package mdettlaff.javagit.object;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -11,9 +11,10 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.List;
 
-import mdettlaff.javagit.core.GitObject.Type;
-import mdettlaff.javagit.core.Tree.Node;
-import mdettlaff.javagit.core.Tree.Node.Mode;
+import mdettlaff.javagit.common.FilesWrapper;
+import mdettlaff.javagit.object.GitObject.Type;
+import mdettlaff.javagit.object.Tree.Node;
+import mdettlaff.javagit.object.Tree.Node.Mode;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;

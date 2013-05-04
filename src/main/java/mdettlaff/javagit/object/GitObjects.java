@@ -1,4 +1,4 @@
-package mdettlaff.javagit.core;
+package mdettlaff.javagit.object;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
+
+import mdettlaff.javagit.common.FilesWrapper;
 
 import org.apache.commons.io.IOUtils;
 

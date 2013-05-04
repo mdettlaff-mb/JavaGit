@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import mdettlaff.javagit.core.Commit;
-import mdettlaff.javagit.core.Creator;
-import mdettlaff.javagit.core.GitObject;
-import mdettlaff.javagit.core.GitObjects;
-import mdettlaff.javagit.core.ObjectId;
+import mdettlaff.javagit.object.Commit;
+import mdettlaff.javagit.object.Creator;
+import mdettlaff.javagit.object.GitObject;
+import mdettlaff.javagit.object.GitObjects;
+import mdettlaff.javagit.object.ObjectId;
 
 import com.google.common.base.Preconditions;
 

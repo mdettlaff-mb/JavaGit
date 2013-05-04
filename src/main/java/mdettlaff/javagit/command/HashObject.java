@@ -2,10 +2,10 @@ package mdettlaff.javagit.command;
 
 import java.io.IOException;
 
-import mdettlaff.javagit.core.Blob;
-import mdettlaff.javagit.core.GitObject;
-import mdettlaff.javagit.core.GitObject.Type;
-import mdettlaff.javagit.core.GitObjects;
+import mdettlaff.javagit.object.Blob;
+import mdettlaff.javagit.object.GitObject;
+import mdettlaff.javagit.object.GitObjects;
+import mdettlaff.javagit.object.GitObject.Type;
 
 import org.apache.commons.io.IOUtils;
 

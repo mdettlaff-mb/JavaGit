@@ -3,9 +3,9 @@ package mdettlaff.javagit.command;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import mdettlaff.javagit.core.Config;
-import mdettlaff.javagit.core.FilesWrapper;
-import mdettlaff.javagit.core.GitObjects;
+import mdettlaff.javagit.common.FilesWrapper;
+import mdettlaff.javagit.config.Config;
+import mdettlaff.javagit.object.GitObjects;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;

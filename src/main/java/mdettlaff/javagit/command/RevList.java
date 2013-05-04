@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import mdettlaff.javagit.core.Commit;
-import mdettlaff.javagit.core.GitObject;
-import mdettlaff.javagit.core.GitObject.Type;
-import mdettlaff.javagit.core.GitObjects;
-import mdettlaff.javagit.core.ObjectId;
+import mdettlaff.javagit.object.Commit;
+import mdettlaff.javagit.object.GitObject;
+import mdettlaff.javagit.object.GitObjects;
+import mdettlaff.javagit.object.ObjectId;
+import mdettlaff.javagit.object.GitObject.Type;
 
 import com.google.common.base.Preconditions;
 
