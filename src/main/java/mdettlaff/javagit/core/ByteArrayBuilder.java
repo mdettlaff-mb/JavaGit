@@ -55,7 +55,7 @@ class ByteArrayBuilder {
 	}
 
 	private byte[] toByteArray(String value) {
-		return value.getBytes(Constants.ENCODING);
+		return value.getBytes();
 	}
 
 	public byte[] build() {

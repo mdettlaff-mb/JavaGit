@@ -36,7 +36,7 @@ public class Config {
 	private void init() throws IOException {
 		Preconditions.checkState(files.exists(path), "Config file not found in: " + path);
 		values = new HashMap<>();
-		Reader reader = new InputStreamReader(files.newInputStream(path), Constants.ENCODING);
+		Reader reader = new InputStreamReader(files.newInputStream(path));
 		try (BufferedReader bufferedReader = new BufferedReader(reader)) {
 			String prefix = "";
 			String line;
