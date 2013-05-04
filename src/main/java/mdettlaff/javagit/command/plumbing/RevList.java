@@ -1,4 +1,4 @@
-package mdettlaff.javagit.command;
+package mdettlaff.javagit.command.plumbing;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import mdettlaff.javagit.command.common.Arguments;
+import mdettlaff.javagit.command.common.Command;
 import mdettlaff.javagit.object.Commit;
 import mdettlaff.javagit.object.GitObject;
 import mdettlaff.javagit.object.GitObject.Type;

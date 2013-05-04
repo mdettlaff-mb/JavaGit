@@ -1,7 +1,9 @@
-package mdettlaff.javagit.command;
+package mdettlaff.javagit.command.plumbing;
 
 import java.io.IOException;
 
+import mdettlaff.javagit.command.common.Arguments;
+import mdettlaff.javagit.command.common.Command;
 import mdettlaff.javagit.object.GitObject;
 import mdettlaff.javagit.object.GitObjects;
 import mdettlaff.javagit.object.ObjectId;

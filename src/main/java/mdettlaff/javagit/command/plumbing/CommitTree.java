@@ -1,9 +1,11 @@
-package mdettlaff.javagit.command;
+package mdettlaff.javagit.command.plumbing;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import mdettlaff.javagit.command.common.Arguments;
+import mdettlaff.javagit.command.common.Command;
 import mdettlaff.javagit.config.Config;
 import mdettlaff.javagit.object.Commit;
 import mdettlaff.javagit.object.Creator;

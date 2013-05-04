@@ -1,4 +1,4 @@
-package mdettlaff.javagit.command;
+package mdettlaff.javagit.command.common;
 
 import java.util.ArrayList;
 import java.util.List;

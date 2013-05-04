@@ -1,4 +1,4 @@
-package mdettlaff.javagit.command;
+package mdettlaff.javagit.command.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

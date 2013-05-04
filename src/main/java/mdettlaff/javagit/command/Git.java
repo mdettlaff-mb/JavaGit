@@ -3,6 +3,13 @@ package mdettlaff.javagit.command;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import mdettlaff.javagit.command.common.Arguments;
+import mdettlaff.javagit.command.common.Command;
+import mdettlaff.javagit.command.plumbing.CatFile;
+import mdettlaff.javagit.command.plumbing.CommitTree;
+import mdettlaff.javagit.command.plumbing.HashObject;
+import mdettlaff.javagit.command.plumbing.RevList;
+import mdettlaff.javagit.command.porcelain.Log;
 import mdettlaff.javagit.common.FilesWrapper;
 import mdettlaff.javagit.config.Config;
 import mdettlaff.javagit.object.GitObjects;
