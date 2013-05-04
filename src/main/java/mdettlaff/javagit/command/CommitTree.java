@@ -37,16 +37,17 @@ public class CommitTree implements Command {
 		for (String parentArgument : ArrayUtils.remove(args, 0)) {
 			parents.add(new ObjectId(parentArgument));
 		}
-		commitTree(new ObjectId(args[0]), message, parents);
+		ObjectId id = execute(new ObjectId(args[0]), message, parents);
+		System.out.println(id);
 	}
 
-	private void commitTree(ObjectId tree, String message, List<ObjectId> parents) throws IOException {
+	public ObjectId execute(ObjectId tree, String message, List<ObjectId> parents) throws IOException {
 		String name = config.get("user.name");
 		String email = config.get("user.email");
 		Creator author = new Creator(name, email, DateTime.now(), "+0200");
 		Commit commit = new Commit(tree, ImmutableList.copyOf(parents), author, author, message);
 		GitObject commitObject = new GitObject(Type.COMMIT, commit.toByteArray().length, commit);
 		ObjectId id = objects.write(commitObject);
-		System.out.println(id);
+		return id;
 	}
 }

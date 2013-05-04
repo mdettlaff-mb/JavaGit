@@ -49,10 +49,12 @@ public class Git implements Command {
 			return new CatFile(objects);
 		case "hash-object":
 			return new HashObject(objects);
-		case "log":
-			return new Log(objects);
 		case "commit-tree":
 			return new CommitTree(objects, config);
+		case "rev-list":
+			return new RevList(objects);
+		case "log":
+			return new Log(new RevList(objects), objects);
 		default:
 			throw new IllegalArgumentException("Unknown command: " + commandArgument);
 		}

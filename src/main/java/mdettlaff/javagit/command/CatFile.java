@@ -19,10 +19,7 @@ public class CatFile implements Command {
 	@Override
 	public void execute(String[] args) throws IOException {
 		Preconditions.checkArgument(args.length > 0, "Object ID parameter is required");
-		catFile(new ObjectId(args[0]));
-	}
-
-	private void catFile(ObjectId id) throws IOException {
+		ObjectId id = new ObjectId(args[0]);
 		GitObject object = objects.read(id);
 		System.out.print(object);
 	}

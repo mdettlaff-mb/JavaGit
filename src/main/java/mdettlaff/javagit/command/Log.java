@@ -2,15 +2,11 @@ package mdettlaff.javagit.command;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.List;
 
 import mdettlaff.javagit.core.Commit;
 import mdettlaff.javagit.core.Creator;
 import mdettlaff.javagit.core.GitObject;
-import mdettlaff.javagit.core.GitObject.Type;
 import mdettlaff.javagit.core.GitObjects;
 import mdettlaff.javagit.core.ObjectId;
 
@@ -20,51 +16,30 @@ public class Log implements Command {
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+	private final RevList revList;
 	private final GitObjects objects;
 
-	private Queue<ObjectId> queue;
-	private Set<ObjectId> open;
-	private Set<ObjectId> closed;
-
-	public Log(GitObjects objects) {
+	public Log(RevList revList, GitObjects objects) {
+		this.revList = revList;
 		this.objects = objects;
-		this.queue = new LinkedList<>();
-		this.open = new HashSet<>();
-		this.closed = new HashSet<>();
 	}
 
 	@Override
 	public void execute(String[] args) throws IOException {
 		Preconditions.checkArgument(args.length > 0, "Object ID parameter is required");
 		boolean showMerges = !(args.length > 1 && args[1].equals("--no-merges"));
-		log(new ObjectId(args[0]), showMerges);
+		ObjectId id = new ObjectId(args[0]);
+		List<ObjectId> ids = revList.execute(id, showMerges);
+		execute(ids);
 	}
 
-	private void log(ObjectId id, boolean showMerges) throws IOException {
-		// use breadth-first search to traverse history
-		open.add(id);
-		queue.add(id);
-		while (!queue.isEmpty()) {
-			ObjectId currentId = queue.remove();
-			Commit commit = readCommit(currentId);
-			for (ObjectId parentId : commit.getParents()) {
-				if (!open.contains(parentId) && !closed.contains(parentId)) {
-					open.add(parentId);
-					queue.add(parentId);
-				}
-			}
-			if (!commit.isMerge() || showMerges) {
-				String commitAsString = commitToString(commit, currentId);
-				System.out.println(commitAsString);
-			}
-			closed.add(currentId);
+	private void execute(List<ObjectId> ids) throws IOException {
+		for (ObjectId id : ids) {
+			GitObject object = objects.read(id);
+			Commit commit = (Commit) object.getContent();
+			String commitAsString = commitToString(commit, id);
+			System.out.println(commitAsString);
 		}
-	}
-
-	private Commit readCommit(ObjectId id) throws IOException {
-		GitObject object = objects.read(id);
-		Preconditions.checkArgument(object.getType() == Type.COMMIT, "Object with given ID must be a commit");
-		return (Commit) object.getContent();
 	}
 
 	private String commitToString(Commit commit, ObjectId id) {
