@@ -63,6 +63,10 @@ public class References {
 		return readSymbolicValue(referenceValue);
 	}
 
+	public void updateSymbolic(String name, String newValue) throws IOException {
+		files.write(toPath(name), SYMBOLIC_REFERENCE_PREFIX + newValue + '\n');
+	}
+
 	private String readFileContent(String referenceName) throws IOException {
 		return files.readAllChars(toPath(referenceName)).trim();
 	}
@@ -77,9 +81,5 @@ public class References {
 
 	private String readSymbolicValue(String referenceValue) {
 		return referenceValue.substring(SYMBOLIC_REFERENCE_PREFIX.length());
-	}
-
-	public void updateSymbolic(String name, String newValue) throws IOException {
-		files.write(toPath(name), SYMBOLIC_REFERENCE_PREFIX + newValue + '\n');
 	}
 }
