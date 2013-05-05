@@ -1,7 +1,6 @@
 package mdettlaff.javagit.reference;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,19 +24,10 @@ public class References {
 		Preconditions.checkArgument(files.exists(toPath(name)), "Unknown reference: " + name);
 		String referenceValue = readFileContent(name);
 		if (isSymbolic(referenceValue)) {
-			return read(readSymbolicValue(referenceValue));
+			return resolve(getSymbolic(referenceValue));
 		} else {
-			return readValue(referenceValue);
+			return new ObjectId(referenceValue);
 		}
-	}
-
-	private ObjectId read(String name) throws IOException {
-		Preconditions.checkArgument(files.exists(toPath(name)), "Invalid reference: " + name);
-		return readValue(readFileContent(name));
-	}
-
-	private ObjectId readValue(String referenceValue) {
-		return new ObjectId(referenceValue);
 	}
 
 	public void delete(String name) throws IOException {
@@ -46,21 +36,21 @@ public class References {
 	}
 
 	public void update(String name, ObjectId newValue) throws IOException {
-		Path path = toPath(name);
-		if (Files.exists(path)) {
+		if (files.exists(toPath(name))) {
 			String referenceValue = readFileContent(name);
 			if (isSymbolic(referenceValue)) {
-				path = toPath(readSymbolicValue(referenceValue));
+				update(getSymbolic(referenceValue), newValue);
+				return;
 			}
 		}
-		files.write(path, newValue.getValue() + '\n');
+		files.write(toPath(name), newValue.getValue() + '\n');
 	}
 
 	public String readSymbolic(String name) throws IOException {
 		Preconditions.checkArgument(files.exists(toPath(name)), "Unknown symbolic ref: " + name);
 		String referenceValue = readFileContent(name);
 		Preconditions.checkArgument(isSymbolic(referenceValue), "Not a symbolic ref: " + name);
-		return readSymbolicValue(referenceValue);
+		return getSymbolic(referenceValue);
 	}
 
 	public void updateSymbolic(String name, String newValue) throws IOException {
@@ -79,7 +69,7 @@ public class References {
 		return referenceValue.startsWith(SYMBOLIC_REFERENCE_PREFIX);
 	}
 
-	private String readSymbolicValue(String referenceValue) {
+	private String getSymbolic(String referenceValue) {
 		return referenceValue.substring(SYMBOLIC_REFERENCE_PREFIX.length());
 	}
 }
