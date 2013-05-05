@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.DirectoryStream;
+import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -36,5 +38,9 @@ public class FilesWrapper {
 
 	public void delete(Path path) throws IOException {
 		Files.delete(path);
+	}
+
+	public DirectoryStream<Path> newDirectoryStream(Path dir, Filter<? super Path> filter) throws IOException {
+		return Files.newDirectoryStream(dir, filter);
 	}
 }

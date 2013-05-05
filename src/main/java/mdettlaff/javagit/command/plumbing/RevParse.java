@@ -8,6 +8,7 @@ import java.util.List;
 import mdettlaff.javagit.command.common.Arguments;
 import mdettlaff.javagit.command.common.Command;
 import mdettlaff.javagit.common.ObjectId;
+import mdettlaff.javagit.object.GitObjects;
 import mdettlaff.javagit.reference.References;
 
 import com.google.common.base.Preconditions;
@@ -15,9 +16,11 @@ import com.google.common.base.Preconditions;
 public class RevParse implements Command {
 
 	private final References refs;
+	private final GitObjects objects;
 
-	public RevParse(References refs) {
+	public RevParse(References refs, GitObjects objects) {
 		this.refs = refs;
+		this.objects = objects;
 	}
 
 	@Override
@@ -30,7 +33,7 @@ public class RevParse implements Command {
 
 	public ObjectId execute(String revision) throws IOException {
 		try {
-			return new ObjectId(revision);
+			return objects.findUniqueId(revision);
 		} catch (IllegalArgumentException e) {
 			List<String> prefixes = Arrays.asList("", "refs/", "refs/tags/", "refs/heads/");
 			return parseReference(revision, prefixes.iterator());

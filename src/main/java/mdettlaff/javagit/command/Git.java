@@ -66,13 +66,13 @@ public class Git implements Command {
 		case "rev-list":
 			return new RevList(objects);
 		case "rev-parse":
-			return new RevParse(refs);
+			return new RevParse(refs, objects);
 		case "update-ref":
 			return new UpdateRef(refs);
 		case "symbolic-ref":
 			return new SymbolicRef(refs);
 		case "log":
-			return new Log(new RevList(objects), new RevParse(refs), objects);
+			return new Log(new RevList(objects), new RevParse(refs, objects), objects);
 		default:
 			throw new IllegalArgumentException("Unknown command: " + commandArgument);
 		}
