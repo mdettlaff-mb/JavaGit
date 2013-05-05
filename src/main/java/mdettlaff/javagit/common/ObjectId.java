@@ -1,5 +1,6 @@
 package mdettlaff.javagit.common;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import org.apache.commons.codec.DecoderException;
@@ -9,27 +10,27 @@ import com.google.common.base.Preconditions;
 
 public class ObjectId {
 
-	private final String value;
+	private final byte[] value;
 
 	public ObjectId(String value) {
 		Preconditions.checkArgument(value.length() == 40, "Invalid object ID: " + value);
-		this.value = value;
+		try {
+			this.value = Hex.decodeHex(value.toCharArray());
+		} catch (DecoderException e) {
+			throw new IllegalArgumentException("Invalid object ID: " + value, e);
+		}
 	}
 
 	public ObjectId(byte[] value) {
-		this(Hex.encodeHexString(value));
+		this.value = value;
 	}
 
 	public String getValue() {
-		return value;
+		return Hex.encodeHexString(value);
 	}
 
 	public byte[] toByteArray() {
-		try {
-			return Hex.decodeHex(value.toCharArray());
-		} catch (DecoderException e) {
-			throw new IllegalStateException("Invalid hex string", e);
-		}
+		return value;
 	}
 
 	@Override
@@ -41,16 +42,16 @@ public class ObjectId {
 			return false;
 		}
 		ObjectId other = (ObjectId) obj;
-		return Objects.equals(value, other.value);
+		return Objects.deepEquals(value, other.value);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(value);
+		return Arrays.hashCode(value);
 	}
 
 	@Override
 	public String toString() {
-		return value;
+		return getValue();
 	}
 }

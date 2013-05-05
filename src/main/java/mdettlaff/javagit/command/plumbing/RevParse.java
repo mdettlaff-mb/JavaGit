@@ -19,9 +19,17 @@ public class RevParse implements Command {
 
 	@Override
 	public void execute(Arguments args) throws IOException {
-		Preconditions.checkArgument(!args.getParameters().isEmpty(), "Reference name parameter is required");
-		String referenceName = args.getParameters().get(0);
-		ObjectId id = refs.resolve(referenceName);
+		Preconditions.checkArgument(!args.getParameters().isEmpty(), "Revision parameter is required");
+		String rev = args.getParameters().get(0);
+		ObjectId id = execute(rev);
 		System.out.println(id);
+	}
+
+	public ObjectId execute(String rev) throws IOException {
+		try {
+			return new ObjectId(rev);
+		} catch (IllegalArgumentException e) {
+			return refs.resolve(rev);
+		}
 	}
 }
