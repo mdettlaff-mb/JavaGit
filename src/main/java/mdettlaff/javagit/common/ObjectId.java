@@ -1,4 +1,4 @@
-package mdettlaff.javagit.object;
+package mdettlaff.javagit.common;
 
 import java.util.Objects;
 

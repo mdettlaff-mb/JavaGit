@@ -9,10 +9,14 @@ import mdettlaff.javagit.command.plumbing.CatFile;
 import mdettlaff.javagit.command.plumbing.CommitTree;
 import mdettlaff.javagit.command.plumbing.HashObject;
 import mdettlaff.javagit.command.plumbing.RevList;
+import mdettlaff.javagit.command.plumbing.RevParse;
+import mdettlaff.javagit.command.plumbing.SymbolicRef;
+import mdettlaff.javagit.command.plumbing.UpdateRef;
 import mdettlaff.javagit.command.porcelain.Log;
 import mdettlaff.javagit.common.FilesWrapper;
 import mdettlaff.javagit.config.Config;
 import mdettlaff.javagit.object.GitObjects;
+import mdettlaff.javagit.reference.References;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,6 +53,7 @@ public class Git implements Command {
 	private Command createCommand(String commandArgument) {
 		FilesWrapper files = new FilesWrapper();
 		GitObjects objects = new GitObjects(files);
+		References refs = new References(files);
 		Path configPath = Paths.get(System.getProperty("user.home"), ".gitconfig");
 		Config config = new Config(files, configPath);
 		switch (commandArgument) {
@@ -60,6 +65,12 @@ public class Git implements Command {
 			return new CommitTree(objects, config);
 		case "rev-list":
 			return new RevList(objects);
+		case "rev-parse":
+			return new RevParse(refs);
+		case "update-ref":
+			return new UpdateRef(refs);
+		case "symbolic-ref":
+			return new SymbolicRef(refs);
 		case "log":
 			return new Log(new RevList(objects), objects);
 		default:

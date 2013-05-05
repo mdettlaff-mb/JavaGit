@@ -3,6 +3,8 @@ package mdettlaff.javagit.object;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import mdettlaff.javagit.common.ObjectId;
+
 class ByteArrayBuilder {
 
 	private ByteArrayOutputStream bytes;

@@ -2,6 +2,8 @@ package mdettlaff.javagit.object;
 
 import java.util.List;
 
+import mdettlaff.javagit.common.ObjectId;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 

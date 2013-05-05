@@ -6,13 +6,13 @@ import java.util.List;
 
 import mdettlaff.javagit.command.common.Arguments;
 import mdettlaff.javagit.command.common.Command;
+import mdettlaff.javagit.common.ObjectId;
 import mdettlaff.javagit.config.Config;
 import mdettlaff.javagit.object.Commit;
 import mdettlaff.javagit.object.Creator;
 import mdettlaff.javagit.object.GitObject;
 import mdettlaff.javagit.object.GitObject.Type;
 import mdettlaff.javagit.object.GitObjects;
-import mdettlaff.javagit.object.ObjectId;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;

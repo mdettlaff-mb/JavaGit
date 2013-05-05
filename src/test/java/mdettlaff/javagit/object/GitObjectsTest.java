@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import mdettlaff.javagit.common.FilesWrapper;
+import mdettlaff.javagit.common.ObjectId;
 import mdettlaff.javagit.object.GitObject.Type;
 import mdettlaff.javagit.object.Tree.Node;
 import mdettlaff.javagit.object.Tree.Node.Mode;

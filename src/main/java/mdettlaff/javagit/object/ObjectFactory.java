@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import mdettlaff.javagit.common.ObjectId;
 import mdettlaff.javagit.object.GitObject.Type;
 import mdettlaff.javagit.object.Tree.Node;
 import mdettlaff.javagit.object.Tree.Node.Mode;

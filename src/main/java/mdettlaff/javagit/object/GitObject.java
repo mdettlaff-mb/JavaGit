@@ -1,5 +1,7 @@
 package mdettlaff.javagit.object;
 
+import mdettlaff.javagit.common.ObjectId;
+
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 

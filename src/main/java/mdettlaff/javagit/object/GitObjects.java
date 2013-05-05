@@ -8,15 +8,15 @@ import java.nio.file.Paths;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
+import mdettlaff.javagit.common.Constants;
 import mdettlaff.javagit.common.FilesWrapper;
+import mdettlaff.javagit.common.ObjectId;
 
 import org.apache.commons.io.IOUtils;
 
 import com.google.common.base.Preconditions;
 
 public class GitObjects {
-
-	private static final String GIT_DIR = ".git";
 
 	private final FilesWrapper files;
 
@@ -49,7 +49,7 @@ public class GitObjects {
 	private Path getPath(ObjectId id) {
 		String prefix = id.getValue().substring(0, 2);
 		String suffix = id.getValue().substring(2);
-		return Paths.get(GIT_DIR, "objects", prefix, suffix);
+		return Paths.get(Constants.GIT_DIR, "objects", prefix, suffix);
 	}
 
 	private void verifyId(GitObject object, ObjectId id) {

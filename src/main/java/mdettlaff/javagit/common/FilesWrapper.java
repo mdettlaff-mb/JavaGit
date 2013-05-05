@@ -25,4 +25,16 @@ public class FilesWrapper {
 	public List<String> readAllLines(Path path) throws IOException {
 		return Files.readAllLines(path, Charset.defaultCharset());
 	}
+
+	public String readAllChars(Path path) throws IOException {
+		return new String(Files.readAllBytes(path));
+	}
+
+	public void write(Path path, String content) throws IOException {
+		Files.write(path, content.getBytes());
+	}
+
+	public void delete(Path path) throws IOException {
+		Files.delete(path);
+	}
 }
