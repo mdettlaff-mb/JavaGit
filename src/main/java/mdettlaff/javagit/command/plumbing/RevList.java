@@ -15,6 +15,7 @@ import mdettlaff.javagit.object.Commit;
 import mdettlaff.javagit.object.GitObject;
 import mdettlaff.javagit.object.GitObject.Type;
 import mdettlaff.javagit.object.GitObjects;
+import mdettlaff.javagit.object.Tag;
 
 import com.google.common.base.Preconditions;
 
@@ -51,7 +52,9 @@ public class RevList implements Command {
 		queue.add(id);
 		while (!queue.isEmpty()) {
 			ObjectId currentId = queue.remove();
-			Commit commit = readCommit(currentId);
+			currentId = getCommitId(currentId);
+			GitObject object = objects.read(currentId);
+			Commit commit = (Commit) object.getContent();
 			for (ObjectId parentId : commit.getParents()) {
 				if (!open.contains(parentId) && !closed.contains(parentId)) {
 					open.add(parentId);
@@ -66,9 +69,14 @@ public class RevList implements Command {
 		return ids;
 	}
 
-	private Commit readCommit(ObjectId id) throws IOException {
-		GitObject object = objects.read(id);
+	private ObjectId getCommitId(ObjectId id) throws IOException {
+		ObjectId commitId = id;
+		GitObject object = objects.read(commitId);
+		if (object.getType() == Type.TAG) {
+			commitId = ((Tag) object.getContent()).getObject();
+			object = objects.read(commitId);
+		}
 		Preconditions.checkArgument(object.getType() == Type.COMMIT, "Object with given ID must be a commit");
-		return (Commit) object.getContent();
+		return commitId;
 	}
 }
