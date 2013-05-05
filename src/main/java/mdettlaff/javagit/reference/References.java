@@ -53,7 +53,7 @@ public class References {
 				path = toPath(readSymbolicValue(referenceValue));
 			}
 		}
-		files.write(path, newValue.getValue());
+		files.write(path, newValue.getValue() + '\n');
 	}
 
 	public String readSymbolic(String name) throws IOException {
@@ -80,6 +80,6 @@ public class References {
 	}
 
 	public void updateSymbolic(String name, String newValue) throws IOException {
-		files.write(toPath(name), SYMBOLIC_REFERENCE_PREFIX + newValue);
+		files.write(toPath(name), SYMBOLIC_REFERENCE_PREFIX + newValue + '\n');
 	}
 }
