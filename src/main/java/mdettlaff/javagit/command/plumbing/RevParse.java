@@ -1,6 +1,9 @@
 package mdettlaff.javagit.command.plumbing;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import mdettlaff.javagit.command.common.Arguments;
 import mdettlaff.javagit.command.common.Command;
@@ -29,7 +32,17 @@ public class RevParse implements Command {
 		try {
 			return new ObjectId(revision);
 		} catch (IllegalArgumentException e) {
-			return refs.resolve(revision);
+			List<String> prefixes = Arrays.asList("", "refs/", "refs/tags/", "refs/heads/");
+			return parseReference(revision, prefixes.iterator());
+		}
+	}
+
+	private ObjectId parseReference(String referenceName, Iterator<String> prefixes) throws IOException {
+		Preconditions.checkArgument(prefixes.hasNext(), "Unknown revision: " + referenceName);
+		try {
+			return refs.resolve(prefixes.next() + referenceName);
+		} catch (IllegalArgumentException e) {
+			return parseReference(referenceName, prefixes);
 		}
 	}
 }
