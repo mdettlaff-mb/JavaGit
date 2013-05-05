@@ -30,9 +30,9 @@ public class Log implements Command {
 
 	@Override
 	public void execute(Arguments args) throws IOException {
-		String rev = args.getParameters().isEmpty() ? "HEAD" : args.getParameters().get(0);
+		String revision = args.getParameters().isEmpty() ? "HEAD" : args.getParameters().get(0);
 		boolean showMerges = args.isOptionSet("no-merges");
-		ObjectId id = revParse.execute(rev);
+		ObjectId id = revParse.execute(revision);
 		List<ObjectId> ids = revList.execute(id, showMerges);
 		execute(ids);
 	}

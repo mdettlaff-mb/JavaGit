@@ -20,16 +20,16 @@ public class RevParse implements Command {
 	@Override
 	public void execute(Arguments args) throws IOException {
 		Preconditions.checkArgument(!args.getParameters().isEmpty(), "Revision parameter is required");
-		String rev = args.getParameters().get(0);
-		ObjectId id = execute(rev);
+		String revision = args.getParameters().get(0);
+		ObjectId id = execute(revision);
 		System.out.println(id);
 	}
 
-	public ObjectId execute(String rev) throws IOException {
+	public ObjectId execute(String revision) throws IOException {
 		try {
-			return new ObjectId(rev);
+			return new ObjectId(revision);
 		} catch (IllegalArgumentException e) {
-			return refs.resolve(rev);
+			return refs.resolve(revision);
 		}
 	}
 }
