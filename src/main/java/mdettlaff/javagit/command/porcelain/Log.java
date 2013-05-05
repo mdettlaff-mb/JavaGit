@@ -12,8 +12,7 @@ import mdettlaff.javagit.object.Commit;
 import mdettlaff.javagit.object.Creator;
 import mdettlaff.javagit.object.GitObject;
 import mdettlaff.javagit.object.GitObjects;
-
-import com.google.common.base.Preconditions;
+import mdettlaff.javagit.reference.References;
 
 public class Log implements Command {
 
@@ -21,16 +20,22 @@ public class Log implements Command {
 
 	private final RevList revList;
 	private final GitObjects objects;
+	private final References refs;
 
-	public Log(RevList revList, GitObjects objects) {
+	public Log(RevList revList, GitObjects objects, References refs) {
 		this.revList = revList;
 		this.objects = objects;
+		this.refs = refs;
 	}
 
 	@Override
 	public void execute(Arguments args) throws IOException {
-		Preconditions.checkArgument(!args.getParameters().isEmpty(), "Object ID parameter is required");
-		ObjectId id = new ObjectId(args.getParameters().get(0));
+		ObjectId id;
+		if (!args.getParameters().isEmpty()) {
+			id = new ObjectId(args.getParameters().get(0));
+		} else {
+			id = refs.resolve("HEAD");
+		}
 		boolean showMerges = args.isOptionSet("no-merges");
 		List<ObjectId> ids = revList.execute(id, showMerges);
 		execute(ids);

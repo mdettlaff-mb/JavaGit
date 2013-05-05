@@ -72,7 +72,7 @@ public class Git implements Command {
 		case "symbolic-ref":
 			return new SymbolicRef(refs);
 		case "log":
-			return new Log(new RevList(objects), objects);
+			return new Log(new RevList(objects), objects, refs);
 		default:
 			throw new IllegalArgumentException("Unknown command: " + commandArgument);
 		}
