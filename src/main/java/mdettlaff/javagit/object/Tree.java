@@ -42,12 +42,12 @@ public class Tree implements ObjectContent {
 
 		private final Mode mode;
 		private final ObjectId value;
-		private final String path;
+		private final String name;
 
-		public Node(Mode mode, ObjectId value, String path) {
+		public Node(Mode mode, ObjectId value, String name) {
 			this.mode = mode;
 			this.value = value;
-			this.path = path;
+			this.name = name;
 		}
 
 		public Mode getMode() {
@@ -58,15 +58,15 @@ public class Tree implements ObjectContent {
 			return value;
 		}
 
-		public String getPath() {
-			return path;
+		public String getName() {
+			return name;
 		}
 
 		public byte[] toByteArray() {
 			ByteArrayBuilder bytes = new ByteArrayBuilder();
 			bytes.string(mode.getLiteral());
 			bytes.string(" ");
-			bytes.string(path);
+			bytes.string(name);
 			bytes.singleByte(0);
 			bytes.bytes(value.toByteArray());
 			return bytes.build();
@@ -79,7 +79,7 @@ public class Tree implements ObjectContent {
 			builder.append(' ');
 			builder.append(value);
 			builder.append(' ');
-			builder.append(path);
+			builder.append(name);
 			return builder.toString();
 		}
 

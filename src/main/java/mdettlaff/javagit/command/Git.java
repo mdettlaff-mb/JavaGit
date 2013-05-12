@@ -13,6 +13,7 @@ import mdettlaff.javagit.command.plumbing.RevList;
 import mdettlaff.javagit.command.plumbing.RevParse;
 import mdettlaff.javagit.command.plumbing.SymbolicRef;
 import mdettlaff.javagit.command.plumbing.UpdateRef;
+import mdettlaff.javagit.command.plumbing.WriteTree;
 import mdettlaff.javagit.command.porcelain.Log;
 import mdettlaff.javagit.common.FilesWrapper;
 import mdettlaff.javagit.config.Config;
@@ -56,6 +57,7 @@ public class Git implements Command {
 		FilesWrapper files = new FilesWrapper();
 		GitObjects objects = new GitObjects(files);
 		References refs = new References(files);
+		IndexIO indexIO = new IndexIO(files);
 		Path configPath = Paths.get(System.getProperty("user.home"), ".gitconfig");
 		Config config = new Config(files, configPath);
 		switch (commandArgument) {
@@ -74,7 +76,9 @@ public class Git implements Command {
 		case "symbolic-ref":
 			return new SymbolicRef(refs);
 		case "ls-files":
-			return new LsFiles(new IndexIO(files));
+			return new LsFiles(indexIO);
+		case "write-tree":
+			return new WriteTree(indexIO, objects);
 		case "log":
 			return new Log(new RevList(objects), new RevParse(refs, objects), objects);
 		default:

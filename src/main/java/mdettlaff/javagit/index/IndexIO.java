@@ -46,7 +46,7 @@ public class IndexIO {
 				i++;
 			}
 			int pathEnd = i;
-			String path = new String(ArrayUtils.subarray(bytes, pathStart, pathEnd));
+			Path path = Paths.get(new String(ArrayUtils.subarray(bytes, pathStart, pathEnd)));
 			i++;
 			while (bytes[i] == (byte) 0 && (entryStart + i) % 8 != 0) {
 				i++;

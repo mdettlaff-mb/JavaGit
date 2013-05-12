@@ -1,13 +1,15 @@
 package mdettlaff.javagit.index;
 
+import java.nio.file.Path;
+
 import mdettlaff.javagit.common.ObjectId;
 
 public class IndexEntry {
 
 	private final ObjectId id;
-	private final String path;
+	private final Path path;
 
-	public IndexEntry(ObjectId id, String path) {
+	public IndexEntry(ObjectId id, Path path) {
 		this.id = id;
 		this.path = path;
 	}
@@ -16,12 +18,12 @@ public class IndexEntry {
 		return id;
 	}
 
-	public String getPath() {
+	public Path getPath() {
 		return path;
 	}
 
 	@Override
 	public String toString() {
-		return path;
+		return path.toString();
 	}
 }
