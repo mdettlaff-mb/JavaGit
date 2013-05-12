@@ -20,20 +20,24 @@ public class FilesWrapper {
 		return Files.newOutputStream(path);
 	}
 
-	public boolean exists(Path path) {
-		return Files.exists(path);
-	}
-
-	public List<String> readAllLines(Path path) throws IOException {
-		return Files.readAllLines(path, Charset.defaultCharset());
+	public byte[] readAllBytes(Path path) throws IOException {
+		return Files.readAllBytes(path);
 	}
 
 	public String readAllChars(Path path) throws IOException {
 		return new String(Files.readAllBytes(path));
 	}
 
+	public List<String> readAllLines(Path path) throws IOException {
+		return Files.readAllLines(path, Charset.defaultCharset());
+	}
+
 	public void write(Path path, String content) throws IOException {
 		Files.write(path, content.getBytes());
+	}
+
+	public boolean exists(Path path) {
+		return Files.exists(path);
 	}
 
 	public void delete(Path path) throws IOException {
