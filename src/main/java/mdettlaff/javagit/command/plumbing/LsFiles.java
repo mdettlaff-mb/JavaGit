@@ -17,7 +17,20 @@ public class LsFiles implements Command {
 
 	@Override
 	public void execute(Arguments args) throws IOException {
+		boolean stage = args.isOptionSet("s");
 		Index index = indexIO.read();
-		System.out.print(index);
+		if (stage) {
+			System.out.print(index);
+		} else {
+			System.out.print(getPaths(index));
+		}
+	}
+
+	private String getPaths(Index index) {
+		StringBuilder builder = new StringBuilder();
+		for (Index.Entry entry : index.getEntries()) {
+			builder.append(entry.getPath()).append('\n');
+		}
+		return builder.toString();
 	}
 }
