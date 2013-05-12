@@ -42,13 +42,13 @@ public class IndexIO {
 			ObjectId id = new ObjectId(ArrayUtils.subarray(bytes, idStart, idEnd));
 			i = idEnd + 2;
 			int pathStart = i;
-			while (bytes[i] != (byte) 0) {
+			while (i < bytes.length && bytes[i] != (byte) 0) {
 				i++;
 			}
 			int pathEnd = i;
 			Path path = Paths.get(new String(ArrayUtils.subarray(bytes, pathStart, pathEnd)));
 			i++;
-			while (bytes[i] == (byte) 0 && (entryStart + i) % 8 != 0) {
+			while (i < bytes.length && bytes[i] == (byte) 0 && (entryStart + i) % 8 != 0) {
 				i++;
 			}
 			entries.add(new IndexEntry(id, path));
