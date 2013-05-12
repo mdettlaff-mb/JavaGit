@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -36,15 +39,15 @@ public class IndexIOTest {
 		assertEquals(new ObjectId("6433b6766d8372901881148308f0d000c8c416f8"), entries.get(0).getId());
 		assertEquals(Paths.get(".gitignore"), entries.get(0).getPath());
 		assertEquals(new ObjectId("0539a9efae831c8cd469dc8d4edda6ba57781013"), entries.get(2).getId());
-		assertEquals(Paths.get("src/main/java/mdettlaff/javagit/command/Git.java"), entries.get(2).getPath());
+		assertEquals(Paths.get("src", "main", "java", "mdettlaff", "javagit", "command", "Git.java"), entries.get(2).getPath());
 		assertEquals(readExpectedFiles(), result.toString());
 	}
 
 	private String readExpectedFiles() throws Exception {
 		StringBuilder expectedFiles = new StringBuilder();
-		for (String expectedFile : IOUtils.readLines(getClass().getResourceAsStream("files"))) {
-			expectedFiles.append(Paths.get(expectedFile));
-			expectedFiles.append('\n');
+		Path files = Paths.get(getClass().getResource("files").toURI());
+		for (String expectedFile : Files.readAllLines(files, Charset.defaultCharset())) {
+			expectedFiles.append(Paths.get(expectedFile)).append('\n');
 		}
 		return expectedFiles.toString();
 	}
