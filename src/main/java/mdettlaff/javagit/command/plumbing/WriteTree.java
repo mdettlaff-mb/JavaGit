@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import mdettlaff.javagit.command.common.Arguments;
 import mdettlaff.javagit.command.common.Command;
@@ -28,12 +26,9 @@ public class WriteTree implements Command {
 	private final IndexIO indexIO;
 	private final GitObjects objects;
 
-	private Map<Path, ObjectId> blobs;
-
 	public WriteTree(IndexIO indexIO, GitObjects objects) {
 		this.indexIO = indexIO;
 		this.objects = objects;
-		this.blobs = new LinkedHashMap<>();
 	}
 
 	@Override
@@ -44,35 +39,34 @@ public class WriteTree implements Command {
 
 	public ObjectId execute() throws IOException {
 		Index index = indexIO.read();
-		for (IndexEntry entry : index.getEntries()) {
-			blobs.put(entry.getPath(), entry.getId());
-		}
-		return writeTreeObject(Paths.get(""), ImmutableList.copyOf(blobs.keySet()));
+		return writeTreeObject(Paths.get(""), index.getEntries());
 	}
 
-	private ObjectId writeTreeObject(Path prefix, List<Path> paths) throws IOException {
+	private ObjectId writeTreeObject(Path prefix, List<IndexEntry> entries) throws IOException {
 		List<Node> nodes = new ArrayList<>();
 		int i = 0;
-		while (i < paths.size()) {
-			if (paths.get(i).getNameCount() == 1) {
-				String fileName = paths.get(i).getFileName().toString();
-				Path blobKey = Paths.get(prefix.toString(), paths.get(i).toString());
-				nodes.add(new Node(Mode.NORMAL, blobs.get(blobKey), fileName));
+		while (i < entries.size()) {
+			Path path = entries.get(i).getPath();
+			if (path.getNameCount() == 1) {
+				String fileName = path.getFileName().toString();
+				nodes.add(new Node(Mode.NORMAL, entries.get(i).getId(), fileName));
 				i++;
 			} else {
-				Path currentDir = paths.get(i).getName(0);
-				List<Path> dirSubtreePaths = new ArrayList<>();
-				while (i < paths.size() && paths.get(i).getNameCount() > 1) {
-					if (paths.get(i).getName(0).equals(currentDir)) {
-						dirSubtreePaths.add(paths.get(i).subpath(1, paths.get(i).getNameCount()));
+				Path directory = path.getName(0);
+				List<IndexEntry> subtrees = new ArrayList<>();
+				while (i < entries.size() && path.getNameCount() > 1) {
+					path = entries.get(i).getPath();
+					if (path.getName(0).equals(directory)) {
+						Path subpath = path.subpath(1, path.getNameCount());
+						subtrees.add(new IndexEntry(entries.get(i).getId(), subpath));
 					} else {
 						break;
 					}
 					i++;
 				}
-				Path newPrefix = Paths.get(prefix.toString(), currentDir.toString());
-				ObjectId treeObjectId = writeTreeObject(newPrefix, dirSubtreePaths);
-				nodes.add(new Node(Mode.DIRECTORY, treeObjectId, currentDir.toString()));
+				Path newPrefix = Paths.get(prefix.toString(), directory.toString());
+				ObjectId treeObjectId = writeTreeObject(newPrefix, subtrees);
+				nodes.add(new Node(Mode.DIRECTORY, treeObjectId, directory.toString()));
 			}
 		}
 		Tree tree = new Tree(ImmutableList.copyOf(nodes));
