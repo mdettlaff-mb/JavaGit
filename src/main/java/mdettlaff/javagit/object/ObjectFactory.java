@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import mdettlaff.javagit.common.FileMode;
 import mdettlaff.javagit.common.ObjectId;
 import mdettlaff.javagit.object.GitObject.Type;
 import mdettlaff.javagit.object.Tree.Node;
-import mdettlaff.javagit.object.Tree.Node.Mode;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +73,7 @@ class ObjectFactory {
 		int firstSpaceIndex = ArrayUtils.indexOf(content, (byte) ' ');
 		int firstNullByteIndex = ArrayUtils.indexOf(content, (byte) 0);
 		String fileModeLiteral = new String(content, 0, firstSpaceIndex);
-		Mode mode = Mode.getByLiteral(fileModeLiteral);
+		FileMode mode = FileMode.getByLiteral(fileModeLiteral);
 		int pathLength = firstNullByteIndex - (firstSpaceIndex + 1);
 		String path = new String(content, firstSpaceIndex + 1, pathLength);
 		byte[] id = Arrays.copyOfRange(content, firstNullByteIndex + 1, content.length);

@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mdettlaff.javagit.common.Constants;
+import mdettlaff.javagit.common.FileMode;
 import mdettlaff.javagit.common.FilesWrapper;
 import mdettlaff.javagit.common.ObjectId;
+import mdettlaff.javagit.index.Index.Entry;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -30,13 +32,17 @@ public class IndexIO {
 		Preconditions.checkState(files.exists(INDEX_PATH), "Index file not found");
 		byte[] bytes = files.readAllBytes(INDEX_PATH);
 		int i = HEADER_SIZE_IN_BYTES;
-		List<IndexEntry> entries = new ArrayList<>();
+		List<Entry> entries = new ArrayList<>();
 		while (i < bytes.length) {
 			int entryStart = i;
+			if (entryStart + 60 > bytes.length) {
+				break;
+			}
 			String signature = new String(ArrayUtils.subarray(bytes, entryStart, entryStart + 4));
 			if (signature.equals("TREE")) {
 				break;
 			}
+			FileMode mode = FileMode.getBySignature(bytes[entryStart + 27]);
 			int idStart = entryStart + 40;
 			int idEnd = idStart + 20;
 			ObjectId id = new ObjectId(ArrayUtils.subarray(bytes, idStart, idEnd));
@@ -51,7 +57,7 @@ public class IndexIO {
 			while (i < bytes.length && bytes[i] == (byte) 0 && (entryStart + i) % 8 != 0) {
 				i++;
 			}
-			entries.add(new IndexEntry(id, path));
+			entries.add(new Entry(path, id, mode));
 		}
 		return new Index(ImmutableList.copyOf(entries));
 	}

@@ -11,11 +11,11 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.List;
 
+import mdettlaff.javagit.common.FileMode;
 import mdettlaff.javagit.common.FilesWrapper;
 import mdettlaff.javagit.common.ObjectId;
 import mdettlaff.javagit.object.GitObject.Type;
 import mdettlaff.javagit.object.Tree.Node;
-import mdettlaff.javagit.object.Tree.Node.Mode;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
@@ -66,7 +66,7 @@ public class GitObjectsTest {
 		Tree tree = (Tree) result.getContent();
 		List<Tree.Node> nodes = tree.getNodes();
 		assertEquals(3, nodes.size());
-		assertEquals(Tree.Node.Mode.NORMAL, nodes.get(0).getMode());
+		assertEquals(FileMode.NORMAL, nodes.get(0).getMode());
 		StringBuilder builder = new StringBuilder();
 		builder.append("100644 6433b6766d8372901881148308f0d000c8c416f8 .gitignore\n");
 		builder.append("100755 f3f38869887ba7ba6ce945a35873f638e5c48f8b pom.xml\n");
@@ -163,9 +163,9 @@ public class GitObjectsTest {
 	public void testWriteTree() throws Exception {
 		ByteArrayOutputStream rawTree = new ByteArrayOutputStream();
 		when(files.newOutputStream(Paths.get(".git", "objects", "be", "42fc666262908364880b2c108ec02597d8b54a"))).thenReturn(rawTree);
-		Node node1 = new Node(Mode.NORMAL, new ObjectId("6433b6766d8372901881148308f0d000c8c416f8"), ".gitignore");
-		Node node2 = new Node(Mode.EXECUTABLE, new ObjectId("f3f38869887ba7ba6ce945a35873f638e5c48f8b"), "pom.xml");
-		Node node3 = new Node(Mode.DIRECTORY, new ObjectId("4eb25976ed157dd9fba6532b60bfb10cc02dce28"), "src");
+		Node node1 = new Node(FileMode.NORMAL, new ObjectId("6433b6766d8372901881148308f0d000c8c416f8"), ".gitignore");
+		Node node2 = new Node(FileMode.EXECUTABLE, new ObjectId("f3f38869887ba7ba6ce945a35873f638e5c48f8b"), "pom.xml");
+		Node node3 = new Node(FileMode.DIRECTORY, new ObjectId("4eb25976ed157dd9fba6532b60bfb10cc02dce28"), "src");
 		ImmutableList<Node> nodes = ImmutableList.of(node1, node2, node3);
 		ObjectContent tree = new Tree(nodes);
 		GitObject object = new GitObject(Type.TREE, 103, tree);

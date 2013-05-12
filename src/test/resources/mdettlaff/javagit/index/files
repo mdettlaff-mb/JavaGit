@@ -1,38 +1,38 @@
-.gitignore
-pom.xml
-src/main/java/mdettlaff/javagit/command/Git.java
-src/main/java/mdettlaff/javagit/command/common/Arguments.java
-src/main/java/mdettlaff/javagit/command/common/Command.java
-src/main/java/mdettlaff/javagit/command/plumbing/CatFile.java
-src/main/java/mdettlaff/javagit/command/plumbing/CommitTree.java
-src/main/java/mdettlaff/javagit/command/plumbing/HashObject.java
-src/main/java/mdettlaff/javagit/command/plumbing/RevList.java
-src/main/java/mdettlaff/javagit/command/plumbing/RevParse.java
-src/main/java/mdettlaff/javagit/command/plumbing/SymbolicRef.java
-src/main/java/mdettlaff/javagit/command/plumbing/UpdateRef.java
-src/main/java/mdettlaff/javagit/command/porcelain/Log.java
-src/main/java/mdettlaff/javagit/common/Constants.java
-src/main/java/mdettlaff/javagit/common/FilenamePrefixFilter.java
-src/main/java/mdettlaff/javagit/common/FilesWrapper.java
-src/main/java/mdettlaff/javagit/common/ObjectId.java
-src/main/java/mdettlaff/javagit/config/Config.java
-src/main/java/mdettlaff/javagit/object/Blob.java
-src/main/java/mdettlaff/javagit/object/ByteArrayBuilder.java
-src/main/java/mdettlaff/javagit/object/Commit.java
-src/main/java/mdettlaff/javagit/object/Creator.java
-src/main/java/mdettlaff/javagit/object/GitObject.java
-src/main/java/mdettlaff/javagit/object/GitObjects.java
-src/main/java/mdettlaff/javagit/object/ObjectContent.java
-src/main/java/mdettlaff/javagit/object/ObjectFactory.java
-src/main/java/mdettlaff/javagit/object/Tag.java
-src/main/java/mdettlaff/javagit/object/Tree.java
-src/main/java/mdettlaff/javagit/reference/References.java
-src/test/java/mdettlaff/javagit/command/common/ArgumentsTest.java
-src/test/java/mdettlaff/javagit/config/ConfigTest.java
-src/test/java/mdettlaff/javagit/object/GitObjectsTest.java
-src/test/java/mdettlaff/javagit/reference/ReferencesTest.java
-src/test/resources/mdettlaff/javagit/config/gitconfig
-src/test/resources/mdettlaff/javagit/object/blob
-src/test/resources/mdettlaff/javagit/object/commit
-src/test/resources/mdettlaff/javagit/object/tag
-src/test/resources/mdettlaff/javagit/object/tree
+100644 6433b6766d8372901881148308f0d000c8c416f8	.gitignore
+100644 7d72a6df229914b25afce384487e5cc8666a155a	pom.xml
+100644 0539a9efae831c8cd469dc8d4edda6ba57781013	src/main/java/mdettlaff/javagit/command/Git.java
+100644 4915b89d83dd42cb4db3d17063e941d5cf05c957	src/main/java/mdettlaff/javagit/command/common/Arguments.java
+100644 3ca08e2778b37797417258b9c3ddd99280593b41	src/main/java/mdettlaff/javagit/command/common/Command.java
+100644 05f0052b882e3f587c320f1db6fa0be35dd3b352	src/main/java/mdettlaff/javagit/command/plumbing/CatFile.java
+100644 e6c4182a06c2f5b7eed7110477ee2566522d8d9e	src/main/java/mdettlaff/javagit/command/plumbing/CommitTree.java
+100644 4928f3a327c4f048627bb817a626a60d6d646e29	src/main/java/mdettlaff/javagit/command/plumbing/HashObject.java
+100644 00e40e0c768af90bce4c5367b2733abc7c97dcfc	src/main/java/mdettlaff/javagit/command/plumbing/RevList.java
+100644 e191ab76382bc3534db38fa3aa22ceee984cc285	src/main/java/mdettlaff/javagit/command/plumbing/RevParse.java
+100644 7e2a6f7fd980b0fec47ef217feb7f9512a4b35f7	src/main/java/mdettlaff/javagit/command/plumbing/SymbolicRef.java
+100644 02db20565695a4c0d011dc03ca554c55622fa831	src/main/java/mdettlaff/javagit/command/plumbing/UpdateRef.java
+100644 bd1de8467c40d5d4ec45c5d1c3862fe7f3e4b210	src/main/java/mdettlaff/javagit/command/porcelain/Log.java
+100644 68ca595907b36e7e276b3da5211bd3dd1d2b0119	src/main/java/mdettlaff/javagit/common/Constants.java
+100644 b2bb3d886719d774a8f7a59cf5c42ed8d4f37218	src/main/java/mdettlaff/javagit/common/FilenamePrefixFilter.java
+100644 87c094d814cdbd9cae199e01dd9b18022a57cd0c	src/main/java/mdettlaff/javagit/common/FilesWrapper.java
+100644 55f62e8f543c884a4ab52ac8621bd5e3f6a587f1	src/main/java/mdettlaff/javagit/common/ObjectId.java
+100644 572dffb0336e907b97e5083163568c6999e48ccf	src/main/java/mdettlaff/javagit/config/Config.java
+100644 0b9bf32b91363ad8b917f7e80cd6fb21822c1bc3	src/main/java/mdettlaff/javagit/object/Blob.java
+100644 bb58469e2b2f3ebbf28a5e234b7f78faee63ca1d	src/main/java/mdettlaff/javagit/object/ByteArrayBuilder.java
+100644 bd30f476fd8c8699132f8a18f10f9899409c2be8	src/main/java/mdettlaff/javagit/object/Commit.java
+100644 6cb83c5e23a58415293513b1063e340287fba11c	src/main/java/mdettlaff/javagit/object/Creator.java
+100644 1e78f48a680fe9c79f8ee3c2109f5317607fd300	src/main/java/mdettlaff/javagit/object/GitObject.java
+100644 77e972efa8d57973fcd0df1e61f0c0e5bbd05ca5	src/main/java/mdettlaff/javagit/object/GitObjects.java
+100644 b3a4f2469bafbb8f61f1528e16a3296971e6ff4a	src/main/java/mdettlaff/javagit/object/ObjectContent.java
+100644 98767b554a5b5a40fb6b156de8b05b69bee89818	src/main/java/mdettlaff/javagit/object/ObjectFactory.java
+100644 2d0b7a2c52043f692476e7840320813aafff9230	src/main/java/mdettlaff/javagit/object/Tag.java
+100644 9d2a86da81f8260a9e9728e83ccee1ea115137c3	src/main/java/mdettlaff/javagit/object/Tree.java
+100644 7925afb47b6fe8dacbbf5c21a15f5b5eb4819b28	src/main/java/mdettlaff/javagit/reference/References.java
+100644 3d06d3cccb0a1690b9782273b9a48c1505c75266	src/test/java/mdettlaff/javagit/command/common/ArgumentsTest.java
+100644 e414bba697ea25eac1f6e3ecfebcc9b80e4a1780	src/test/java/mdettlaff/javagit/config/ConfigTest.java
+100644 7e4d89bc57b2d63f3b62b2885fc00b14aab295b9	src/test/java/mdettlaff/javagit/object/GitObjectsTest.java
+100644 35dc6208d573841180e7fc8c664af5291f17c067	src/test/java/mdettlaff/javagit/reference/ReferencesTest.java
+100644 6e68a7dd5e3cedd492240328c7c041a9bbbb53b1	src/test/resources/mdettlaff/javagit/config/gitconfig
+100644 75ac925c075253139139c2818e1ccab43d0650ff	src/test/resources/mdettlaff/javagit/object/blob
+100644 46934f98a11f0cbf712b1d07d3d542f9d0b4dd46	src/test/resources/mdettlaff/javagit/object/commit
+100644 f8f3f6af97c011367d4fd25d9abcbd895e0eee09	src/test/resources/mdettlaff/javagit/object/tag
+100644 81cd82e27e47bcbdf69ca57683d9728558eee936	src/test/resources/mdettlaff/javagit/object/tree

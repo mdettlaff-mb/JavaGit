@@ -2,6 +2,7 @@ package mdettlaff.javagit.object;
 
 import java.util.List;
 
+import mdettlaff.javagit.common.FileMode;
 import mdettlaff.javagit.common.ObjectId;
 
 import org.apache.commons.lang3.StringUtils;
@@ -40,17 +41,17 @@ public class Tree implements ObjectContent {
 
 	public static class Node {
 
-		private final Mode mode;
+		private final FileMode mode;
 		private final ObjectId value;
 		private final String name;
 
-		public Node(Mode mode, ObjectId value, String name) {
+		public Node(FileMode mode, ObjectId value, String name) {
 			this.mode = mode;
 			this.value = value;
 			this.name = name;
 		}
 
-		public Mode getMode() {
+		public FileMode getMode() {
 			return mode;
 		}
 
@@ -81,33 +82,6 @@ public class Tree implements ObjectContent {
 			builder.append(' ');
 			builder.append(name);
 			return builder.toString();
-		}
-
-		public static enum Mode {
-
-			NORMAL("100644"),
-			EXECUTABLE("100755"),
-			SYMLINK("120000"),
-			DIRECTORY("40000");
-
-			private String literal;
-
-			private Mode(String literal) {
-				this.literal = literal;
-			}
-
-			public String getLiteral() {
-				return literal;
-			}
-
-			public static Mode getByLiteral(String literal) {
-				for (Mode mode : values()) {
-					if (mode.literal.equals(literal)) {
-						return mode;
-					}
-				}
-				throw new IllegalArgumentException("Unknown mode literal: " + literal);
-			}
 		}
 	}
 }
