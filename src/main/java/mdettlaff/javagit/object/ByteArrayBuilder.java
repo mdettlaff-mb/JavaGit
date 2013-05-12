@@ -22,8 +22,9 @@ class ByteArrayBuilder {
 		}
 	}
 
-	public void singleByte(int value) {
+	public ByteArrayBuilder singleByte(int value) {
 		bytes.write(value);
+		return this;
 	}
 
 	public ByteArrayBuilder string(String value) {
