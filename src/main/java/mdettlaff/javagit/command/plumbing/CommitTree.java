@@ -41,14 +41,6 @@ public class CommitTree implements Command {
 		System.out.println(commitObjectId);
 	}
 
-	private List<ObjectId> getParents(List<String> parameters) {
-		List<ObjectId> parents = new ArrayList<>();
-		for (String parentArgument : parameters.subList(1, parameters.size())) {
-			parents.add(new ObjectId(parentArgument));
-		}
-		return parents;
-	}
-
 	public ObjectId execute(ObjectId tree, String message, List<ObjectId> parents) throws IOException {
 		String name = config.get("user.name");
 		String email = config.get("user.email");
@@ -57,5 +49,13 @@ public class CommitTree implements Command {
 		GitObject commitObject = new GitObject(Type.COMMIT, commit.toByteArray().length, commit);
 		ObjectId id = objects.write(commitObject);
 		return id;
+	}
+
+	private List<ObjectId> getParents(List<String> parameters) {
+		List<ObjectId> parents = new ArrayList<>();
+		for (String parentArgument : parameters.subList(1, parameters.size())) {
+			parents.add(new ObjectId(parentArgument));
+		}
+		return parents;
 	}
 }
