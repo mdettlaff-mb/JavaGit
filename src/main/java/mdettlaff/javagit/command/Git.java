@@ -8,6 +8,7 @@ import mdettlaff.javagit.command.common.Command;
 import mdettlaff.javagit.command.plumbing.CatFile;
 import mdettlaff.javagit.command.plumbing.CommitTree;
 import mdettlaff.javagit.command.plumbing.HashObject;
+import mdettlaff.javagit.command.plumbing.LsFiles;
 import mdettlaff.javagit.command.plumbing.RevList;
 import mdettlaff.javagit.command.plumbing.RevParse;
 import mdettlaff.javagit.command.plumbing.SymbolicRef;
@@ -15,6 +16,7 @@ import mdettlaff.javagit.command.plumbing.UpdateRef;
 import mdettlaff.javagit.command.porcelain.Log;
 import mdettlaff.javagit.common.FilesWrapper;
 import mdettlaff.javagit.config.Config;
+import mdettlaff.javagit.index.IndexIO;
 import mdettlaff.javagit.object.GitObjects;
 import mdettlaff.javagit.reference.References;
 
@@ -71,6 +73,8 @@ public class Git implements Command {
 			return new UpdateRef(refs);
 		case "symbolic-ref":
 			return new SymbolicRef(refs);
+		case "ls-files":
+			return new LsFiles(new IndexIO(files));
 		case "log":
 			return new Log(new RevList(objects), new RevParse(refs, objects), objects);
 		default:
